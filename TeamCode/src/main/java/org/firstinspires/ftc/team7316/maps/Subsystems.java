@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.team7316.maps;
 
-import org.firstinspires.ftc.team7316.subsystems.ContainerSubsystem;
+import org.firstinspires.ftc.team7316.subsystems.ArmSubsystem;
 import org.firstinspires.ftc.team7316.subsystems.IntakeSubsystem;
-import org.firstinspires.ftc.team7316.subsystems.MecanumDriveSubsystem;
-import org.firstinspires.ftc.team7316.subsystems.ShooterSubsystem;
-import org.firstinspires.ftc.team7316.subsystems.WobbleSubsystem;
+import org.firstinspires.ftc.team7316.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.team7316.subsystems.SpinnerSubsystem;
 import org.firstinspires.ftc.team7316.util.Scheduler;
 import org.firstinspires.ftc.team7316.util.subsystems.Subsystem;
 
@@ -17,21 +16,25 @@ public class Subsystems {
     public static Subsystems instance = null;
 
     public Subsystem[] subsystems;
-    public MecanumDriveSubsystem mecanumDriveSubsystem;
+    public DriveSubsystem driveSubsystem;
     public IntakeSubsystem intake;
-    public ShooterSubsystem shoot;
-    public ContainerSubsystem contain;
-    public WobbleSubsystem wobble;
+//    public ShooterSubsystem shoot;
+//    public ContainerSubsystem contain;
+//    public WobbleSubsystem wobble;
+    public ArmSubsystem armSub;
+    public SpinnerSubsystem spinnerSub;
 
 
     private Subsystems () {
-        mecanumDriveSubsystem = new MecanumDriveSubsystem();
+        driveSubsystem = new DriveSubsystem();
         intake = new IntakeSubsystem();
-        shoot = new ShooterSubsystem();
-        contain = new ContainerSubsystem();
-        wobble = new WobbleSubsystem();
+//        shoot = new ShooterSubsystem();
+//        contain = new ContainerSubsystem();
+//        wobble = new WobbleSubsystem();
+        armSub = new ArmSubsystem();
+        spinnerSub = new SpinnerSubsystem();
 
-        subsystems = new Subsystem[] {mecanumDriveSubsystem, intake, shoot, contain, wobble};
+        subsystems = new Subsystem[] {driveSubsystem, intake, armSub, spinnerSub};
     }
 
     public static void createSubsystems() {

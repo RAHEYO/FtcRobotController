@@ -6,7 +6,7 @@ import org.firstinspires.ftc.team7316.commands.JoystickDrive;
 import org.firstinspires.ftc.team7316.util.copypastaLib.MotionPath;
 import org.firstinspires.ftc.team7316.util.subsystems.Subsystem;
 
-public class MecanumDriveSubsystem extends Subsystem {
+public class DriveSubsystem extends Subsystem {
 
     @Override
     public void reset() {

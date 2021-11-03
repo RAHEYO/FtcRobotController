@@ -33,11 +33,11 @@ public class Hardware {
     public DcMotor shooterMotor;
     public DcMotor intakeMotor;
     public DcMotor wobbleMotor;
+    public DcMotor armMotor;
+    public DcMotor spinnerMotor;
     public GyroWrapper gyroWrapper;
 
-    public Servo wobbleServo;
-    public Servo containerServoFlip;
-    public Servo containerServoSet;
+    public Servo armServo;
 
     public BNO055IMU imu;
     public DCMotorWrapper frontLeftMotorWrapper;
@@ -49,31 +49,27 @@ public class Hardware {
     public final String frontRightMotorName = "frmotor";
     public final String backLeftMotorName = "blmotor";
     public final String backRightMotorName = "brmotor";
-    public final String shooterMotorName = "smotor";
     public final String intakeMotorName = "intakemotor";
-    public final String wobbleMotorName = "wmotor";
     public final String imuname = "gyro";
-    public final String containerServoFlipName = "cfservo";
-    public final String containerServoSetName = "csservo";
-    public final String wobbleServoName = "wservo";
+    public final String armMotorName = "armmotor";
+    public final String armServoName = "armservo";
+    public final String spinnerName = "spinnermotor";
 
 
     /**
      * Initialize all the hardware fields here
      */
     public Hardware (HardwareMap map) {
+        armMotor = map.dcMotor.get(armMotorName);
+
         frontLeftMotor = map.dcMotor.get(frontLeftMotorName);
         frontRightMotor= map.dcMotor.get(frontRightMotorName);
         backLeftMotor = map.dcMotor.get(backLeftMotorName);
         backRightMotor= map.dcMotor.get(backRightMotorName);
-        shooterMotor = map.dcMotor.get(shooterMotorName);
-        wobbleMotor = map.dcMotor.get(wobbleMotorName);
         intakeMotor = map.dcMotor.get(intakeMotorName);
+        armServo = map.servo.get(armServoName);
+        spinnerMotor = map.dcMotor.get(spinnerName);
 
-        wobbleServo = map.servo.get(wobbleServoName);
-        containerServoFlip = map.servo.get(containerServoFlipName);
-        containerServoSet = map.servo.get(containerServoSetName);
-        intakeMotor = map.dcMotor.get(intakeMotorName);
 
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

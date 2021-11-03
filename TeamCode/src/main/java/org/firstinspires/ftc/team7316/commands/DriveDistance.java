@@ -7,7 +7,6 @@ import org.firstinspires.ftc.team7316.maps.Subsystems;
 import org.firstinspires.ftc.team7316.util.commands.AutoDecision;
 import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.copypastaLib.CombinedPath;
-import org.firstinspires.ftc.team7316.util.subsystems.Subsystem;
 
 public class DriveDistance extends Command {
     private AutoDecision decision;
@@ -25,13 +24,13 @@ public class DriveDistance extends Command {
     }
     @Override
     public void init() {
-        requires(Subsystems.instance.mecanumDriveSubsystem);
+        requires(Subsystems.instance.driveSubsystem);
         if(decision!=null){
             this.ticks = (int) decision.findNumber();
         }
         t.reset();
-        Subsystems.instance.mecanumDriveSubsystem.resetMotors();
-        Subsystems.instance.mecanumDriveSubsystem.resetEncoders();
+        Subsystems.instance.driveSubsystem.resetMotors();
+        Subsystems.instance.driveSubsystem.resetEncoders();
 
         CombinedPath.LongitudalTrapezoid pth;
         if(ticks>0){
@@ -41,9 +40,9 @@ public class DriveDistance extends Command {
             pth = new CombinedPath.LongitudalTrapezoid(0,ticks,-Constants.MAX_TICKS_SPEED,-Constants.MAX_TICKS_ACCEL);
         }
 
-        Subsystems.instance.mecanumDriveSubsystem.setMotorPaths(pth);
+        Subsystems.instance.driveSubsystem.setMotorPaths(pth);
         pathTime = pth.getTotalTime();
-        Subsystems.instance.mecanumDriveSubsystem.setMotorPaths(pth);
+        Subsystems.instance.driveSubsystem.setMotorPaths(pth);
         lastTime = System.currentTimeMillis();
     }
 
@@ -52,7 +51,7 @@ public class DriveDistance extends Command {
         long dMilis = System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
 
-        Subsystems.instance.mecanumDriveSubsystem.driveWithPID((double)dMilis / 1000.0);
+        Subsystems.instance.driveSubsystem.driveWithPID((double)dMilis / 1000.0);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class DriveDistance extends Command {
 
     @Override
     public void end() {
-        Subsystems.instance.mecanumDriveSubsystem.setMotors(0,0,0,0);
+        Subsystems.instance.driveSubsystem.setMotors(0,0,0,0);
     }
 }
 

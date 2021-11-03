@@ -19,7 +19,7 @@ public class TeleopIntake extends Command {
         else if( OI.instance.gp1.leftTriggerWrapper.pressedState()){
             Subsystems.instance.intake.outtake();
         }
-        else{
+        else {
             Subsystems.instance.intake.reset();
         }
     }

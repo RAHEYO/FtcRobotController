@@ -18,13 +18,13 @@ public class StrafeDistance extends Command {
     public StrafeDistance(int ticks){this.ticks = ticks;}
 
     public void init() {
-        requires(Subsystems.instance.mecanumDriveSubsystem);
+        requires(Subsystems.instance.driveSubsystem);
         if(decision!=null){
             this.ticks = (int) decision.findNumber();
         }
         t.reset();
-        Subsystems.instance.mecanumDriveSubsystem.resetMotors();
-        Subsystems.instance.mecanumDriveSubsystem.resetEncoders();
+        Subsystems.instance.driveSubsystem.resetMotors();
+        Subsystems.instance.driveSubsystem.resetEncoders();
 
         CombinedPath.LongitudalTrapezoid pth;
         CombinedPath.LongitudalTrapezoid reversePth;
@@ -37,9 +37,9 @@ public class StrafeDistance extends Command {
             reversePth = new CombinedPath.LongitudalTrapezoid(0,-ticks,-Constants.MAX_TICKS_SPEED,-Constants.MAX_TICKS_ACCEL);
         }
 
-        Subsystems.instance.mecanumDriveSubsystem.setMotorPathsStrafe(pth, reversePth);
+        Subsystems.instance.driveSubsystem.setMotorPathsStrafe(pth, reversePth);
         pathTime = pth.getTotalTime();
-        Subsystems.instance.mecanumDriveSubsystem.setMotorPathsStrafe(pth, reversePth);
+        Subsystems.instance.driveSubsystem.setMotorPathsStrafe(pth, reversePth);
         lastTime = System.currentTimeMillis();
 
 
@@ -50,7 +50,7 @@ public class StrafeDistance extends Command {
         long dMilis = System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
 
-        Subsystems.instance.mecanumDriveSubsystem.driveWithPID((double)dMilis / 1000.0);
+        Subsystems.instance.driveSubsystem.driveWithPID((double)dMilis / 1000.0);
     }
 
     @Override
@@ -60,6 +60,6 @@ public class StrafeDistance extends Command {
 
     @Override
     public void end() {
-        Subsystems.instance.mecanumDriveSubsystem.setMotors(0,0,0,0);
+        Subsystems.instance.driveSubsystem.setMotors(0,0,0,0);
     }
 }
