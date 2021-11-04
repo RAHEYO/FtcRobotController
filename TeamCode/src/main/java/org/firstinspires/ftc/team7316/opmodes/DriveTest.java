@@ -17,8 +17,9 @@ public class DriveTest extends AutoBaseOpMode {
 
     @Override
     public void onInit() {
-
         Scheduler.instance.add(new DriveDistance(Constants.inchesToTicks(10)));
+
+
     }
 
     @Override

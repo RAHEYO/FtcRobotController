@@ -24,7 +24,7 @@ public class JoystickDrive extends Command {
         Hardware.log("turn:", turn);
 
         double magnitude = Math.sqrt(y*y + x*x);
-        double angle = Util.getAngleFromPoint(x,y);
+        double angle = Util.getAngleFromPoint(x,y) + 90;
 
         Hardware.log("magnitude:", magnitude);
         Hardware.log("angle:", angle);
