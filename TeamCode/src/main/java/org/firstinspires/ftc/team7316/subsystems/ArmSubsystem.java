@@ -8,8 +8,8 @@ import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.subsystems.Subsystem;
 
 public class ArmSubsystem extends Subsystem {
-    private final double upPower = 0.5;
-    private final double downPower = -0.5;
+    private final double upPower = 0.3;
+    private final double downPower = -0.3;
 
     @Override
     public void reset() { Hardware.instance.armMotor.setPower(0); }

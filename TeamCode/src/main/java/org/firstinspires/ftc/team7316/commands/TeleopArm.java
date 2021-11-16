@@ -22,7 +22,9 @@ public class TeleopArm extends Command {
         }
 
         // Turning servo
-        final double y = OI.instance.gp1RightStick.getY();
+        double y = OI.instance.gp1RightStick.getY();
+
+        if (y == 0 && (OI.instance.gp1.left_bumper.pressedState() || OI.instance.gp1.right_bumper.pressedState())) y = 70;
 
         Subsystems.instance.armSub.turnServo(y);
     }

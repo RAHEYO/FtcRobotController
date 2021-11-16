@@ -1,92 +1,9 @@
-package org.firstinspires.ftc.team7316.commands;
-
-import org.firstinspires.ftc.team7316.maps.OI;
-import org.firstinspires.ftc.team7316.maps.Subsystems;
-import org.firstinspires.ftc.team7316.maps.Hardware;
-import org.firstinspires.ftc.team7316.util.Util;
-import org.firstinspires.ftc.team7316.util.commands.Command;
-
-public class JoystickDrive extends Command {
-
-    @Override
-    public void init() {
-        requires(Subsystems.instance.driveSubsystem);
-    }
-
-    @Override
-    public void loop()  {
-        double y = OI.instance.gp1LeftStick.getY();
-        double x = -OI.instance.gp1LeftStick.getX();
-        double turn = OI.instance.gp1RightStick.getX();
-
-        Hardware.log("y:", y);
-        Hardware.log("x:", x);
-        Hardware.log("turn:", turn);
-
-        double magnitude = Math.sqrt(y*y + x*x);
-        double angle = Util.getAngleFromPoint(x,y) + 90;
-
-        Hardware.log("magnitude:", magnitude);
-        Hardware.log("angle:", angle);
-
-        //rotates the axis of the joystick by pi/4 radians so that x and y are proportional to the powers to be given
-        //to the mecanum axis. This arises from mecanum wheels exerting force at a diagonal to the direction they are pointing.
-        double potentialRotatedAngle = angle - Math.PI/4;
-        double rotatedAngle = (potentialRotatedAngle >= 0) ? potentialRotatedAngle : potentialRotatedAngle + 2 * Math.PI;
-        Hardware.log("rotated angle:", rotatedAngle);
-
-        double rotatedX = Math.cos(rotatedAngle);
-        double rotatedY = Math.sin(rotatedAngle);
-
-        double tempRotatedX = rotatedX;
-        double tempRotatedY = rotatedY;
-
-        if(rotatedX > rotatedY) {
-            rotatedY = magnitude * Math.abs(rotatedY/rotatedX);
-            rotatedX = magnitude;
-        }
-
-        else {
-            rotatedX = magnitude * Math.abs(rotatedX/rotatedY);
-            rotatedY = magnitude;
-        }
-
-        rotatedX = Math.copySign(rotatedX,   tempRotatedX);
-        rotatedY = Math.copySign(rotatedY, tempRotatedY);
-
-        Hardware.log("rotated x:", rotatedX);
-        Hardware.log("rotated y:", rotatedY);
-
-        if(OI.instance.gp1.rightTriggerWrapper.pressedState()){
-            Subsystems.instance.driveSubsystem.setMotors(.7*(rotatedY + turn), .7*(rotatedX - turn),
-                    .7*(rotatedX + turn), .7*(rotatedY - turn));
-        }
-        else if(magnitude==0){
-            Subsystems.instance.driveSubsystem.setMotors(turn, -turn, turn,-turn);
-        }
-        else{
-            Subsystems.instance.driveSubsystem.setMotors(rotatedY + turn, rotatedX - turn,
-                    rotatedX + turn, rotatedY - turn);
-        }
-
-    }
-
-    @Override
-    public boolean shouldRemove() {
-        return false;
-    }
-
-    @Override
-    public void end() {}
-}
-
-
-
 //package org.firstinspires.ftc.team7316.commands;
 //
 //import org.firstinspires.ftc.team7316.maps.OI;
 //import org.firstinspires.ftc.team7316.maps.Subsystems;
 //import org.firstinspires.ftc.team7316.maps.Hardware;
+//import org.firstinspires.ftc.team7316.util.Util;
 //import org.firstinspires.ftc.team7316.util.commands.Command;
 //
 //public class JoystickDrive extends Command {
@@ -107,38 +24,90 @@ public class JoystickDrive extends Command {
 //        Hardware.log("turn:", turn);
 //
 //        double magnitude = Math.sqrt(y*y + x*x);
+//        double angle = Util.getAngleFromPoint(x,y) + 90;
+//
+//        Hardware.log("magnitude:", magnitude);
+//        Hardware.log("angle:", angle);
+//
+//        //rotates the axis of the joystick by pi/4 radians so that x and y are proportional to the powers to be given
+//        //to the mecanum axis. This arises from mecanum wheels exerting force at a diagonal to the direction they are pointing.
+//        double potentialRotatedAngle = angle - Math.PI/4;
+//        double rotatedAngle = (potentialRotatedAngle >= 0) ? potentialRotatedAngle : potentialRotatedAngle + 2 * Math.PI;
+//        Hardware.log("rotated angle:", rotatedAngle);
+//
+//        double rotatedX = Math.cos(rotatedAngle);
+//        double rotatedY = Math.sin(rotatedAngle);
+//
+//        double tempRotatedX = rotatedX;
+//        double tempRotatedY = rotatedY;
+//
+//        if(rotatedX > rotatedY) {
+//            rotatedY = magnitude * Math.abs(rotatedY/rotatedX);
+//            rotatedX = magnitude;
+//        }
+//
+//        else {
+//            rotatedX = magnitude * Math.abs(rotatedX/rotatedY);
+//            rotatedY = magnitude;
+//        }
+//
+//        rotatedX = Math.copySign(rotatedX,   tempRotatedX);
+//        rotatedY = Math.copySign(rotatedY, tempRotatedY);
+//
+//        Hardware.log("rotated x:", rotatedX);
+//        Hardware.log("rotated y:", rotatedY);
+//
+//        if(OI.instance.gp1.rightTriggerWrapper.pressedState()){
+//            Subsystems.instance.driveSubsystem.setMotors(.7*(rotatedY + turn), .7*(rotatedX - turn),
+//                    .7*(rotatedX + turn), .7*(rotatedY - turn));
+//        }
+//        else if(magnitude==0){
+//            Subsystems.instance.driveSubsystem.setMotors(turn, -turn, turn,-turn);
+//        }
+//        else{
+//            Subsystems.instance.driveSubsystem.setMotors(rotatedY + turn, rotatedX - turn,
+//                    rotatedX + turn, rotatedY - turn);
+//        }
+//
+//    }
+//
+//    @Override
+//    public boolean shouldRemove() {
+//        return false;
+//    }
+//
+//    @Override
+//    public void end() {}
+//}
+
+
+
+package org.firstinspires.ftc.team7316.commands;
+
+import org.firstinspires.ftc.team7316.maps.OI;
+import org.firstinspires.ftc.team7316.maps.Subsystems;
+import org.firstinspires.ftc.team7316.util.commands.Command;
+
+public class JoystickDrive extends Command {
+
+    @Override
+    public void init() {
+        requires(Subsystems.instance.driveSubsystem);
+    }
+
+    @Override
+    public void loop() {
+//        double y = OI.instance.gp1LeftStick.getY();
+//        double x = -OI.instance.gp1LeftStick.getX();
+//        double turn = OI.instance.gp1RightStick.getX();
+//
+//        Hardware.log("turn:", turn);
+//
+//        double magnitude = Math.sqrt(y*y + x*x);
 ////        double angle = Util.getAngleFromPoint(x,y) - 90;
 //
 //        Hardware.log("magnitude:", magnitude);
 ////        Hardware.log("angle:", angle);
-//
-//        //rotates the axis of the joystick by pi/4 radians so that x and y are proportional to the powers to be given
-//        //to the mecanum axis. This arises from mecanum wheels exerting force at a diagonal to the direction they are pointing.
-////        double potentialRotatedAngle = angle - Math.PI/4;
-////        double rotatedAngle = (potentialRotatedAngle >= 0) ? potentialRotatedAngle : potentialRotatedAngle + 2 * Math.PI;
-////        Hardware.log("rotated angle:", rotatedAngle);
-////
-////        double rotatedX = Math.cos(rotatedAngle);
-////        double rotatedY = Math.sin(rotatedAngle);
-////
-////        double tempRotatedX = rotatedX;
-////        double tempRotatedY = rotatedY;
-////
-////        if(rotatedX > rotatedY) {
-////            rotatedY = magnitude * Math.abs(rotatedY/rotatedX);
-////            rotatedX = magnitude;
-////        }
-////
-////        else {
-////            rotatedX = magnitude * Math.abs(rotatedX/rotatedY);
-////            rotatedY = magnitude;
-////        }
-////
-////        rotatedX = Math.copySign(rotatedX,   tempRotatedX);
-////        rotatedY = Math.copySign(rotatedY, tempRotatedY);
-////
-////        Hardware.log("rotated x:", rotatedX);
-////        Hardware.log("rotated y:", rotatedY);
 //
 //        double frontLeftPower = magnitude;
 //        double frontRightPower = magnitude;
@@ -173,27 +142,86 @@ public class JoystickDrive extends Command {
 //
 //        Subsystems.instance.driveSubsystem.setMotors(frontLeftPower, frontRightPower,
 //                rearLeftPower, rearRightPower);
+
+        // Flipped because of the controller issue
+//        double x = OI.instance.gp1LeftStick.getY();
+//        double y = OI.instance.gp1LeftStick.getX();
+//        double MOTOR_POWER = 1;
 //
-////        if(OI.instance.gp1.rightTriggerWrapper.pressedState()){
-////            Subsystems.instance.mecanumDriveSubsystem.setMotors(.7*(angle + turn),
-////                    .7*(angle - turn),
-////                    .7*(angle + turn), .7*(angle - turn))
-////        }
-////        else if(magnitude==0){
-////            Subsystems.instance.mecanumDriveSubsystem.setMotors(turn, -turn, turn,-turn);
-////        }
-////        else{
-////            Subsystems.instance.mecanumDriveSubsystem.setMotors(angle + turn, angle - turn,
-////                    angle + turn, angle - turn);
-////        }
+//        if(OI.instance.gp1.a_button.pressedState())
+//            MOTOR_POWER *= 0.5;
 //
-//    }
-//
-//    @Override
-//    public boolean shouldRemove() {
-//        return false;
-//    }
-//
-//    @Override
-//    public void end() {}
-//}
+//        // Forward
+//        if (y >= 0.5)
+//            //Subsystems.instance.mecanumDriveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER);
+//            Subsystems.instance.driveSubsystem.setMotors(-MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER,
+//                    MOTOR_POWER);
+//            // Backwards
+//        else if (y <= -0.5)
+//            //Subsystems.instance.mecanumDriveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER);
+//            Subsystems.instance.driveSubsystem.setMotors(MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER,
+//                    -MOTOR_POWER);
+//            // Right
+//        else if (x >= 0.5)
+//            //Subsystems.instance.mecanumDriveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER);
+//            Subsystems.instance.driveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, MOTOR_POWER,
+//                    -MOTOR_POWER);
+//            //
+//        else if (x <= -0.5)
+//            //Subsystems.instance.mecanumDriveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER);
+//            Subsystems.instance.driveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, -MOTOR_POWER,
+//                    MOTOR_POWER);
+//        else
+//            Subsystems.instance.driveSubsystem.setMotors(0, 0, 0, 0);
+
+        double x = OI.instance.gp1LeftStick.getY();
+        double y = OI.instance.gp1LeftStick.getX();
+        double MOTOR_POWER = 1;
+
+        if (OI.instance.gp1.rightTriggerWrapper.pressedState())
+            MOTOR_POWER *= 0.5;
+
+        double flPower = MOTOR_POWER;
+        double frPower = MOTOR_POWER;
+        double rlPower = MOTOR_POWER;
+        double rrPower = MOTOR_POWER;
+
+        // Forward
+        if (y >= 0.3) {
+            //Subsystems.instance.mecanumDriveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER);
+            flPower = MOTOR_POWER;
+            frPower = MOTOR_POWER;
+            rlPower = -MOTOR_POWER;
+            rrPower = -MOTOR_POWER;
+            // Backwards
+        } else if (y <= -0.3) {
+            //Subsystems.instance.mecanumDriveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER);
+            flPower = -MOTOR_POWER;
+            frPower = -MOTOR_POWER;
+            rlPower = MOTOR_POWER;
+            rrPower = MOTOR_POWER;
+        }
+
+        if (x >= 0.3) {
+            //Subsystems.instance.mecanumDriveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER);
+            frPower = -MOTOR_POWER;
+            rrPower = MOTOR_POWER;
+        } else if (x <= -0.3) {
+            //Subsystems.instance.mecanumDriveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER);
+            flPower = -MOTOR_POWER;
+            rlPower = MOTOR_POWER;
+        }
+
+
+        Subsystems.instance.driveSubsystem.setMotors(flPower, frPower, rlPower, rrPower);
+
+    }
+
+    @Override
+    public boolean shouldRemove() {
+        return false;
+    }
+
+    @Override
+    public void end() {}
+}
