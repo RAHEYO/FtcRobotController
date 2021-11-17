@@ -97,17 +97,10 @@ public class JoystickDrive extends Command {
 
     @Override
     public void loop() {
-//        double y = OI.instance.gp1LeftStick.getY();
-//        double x = -OI.instance.gp1LeftStick.getX();
-//        double turn = OI.instance.gp1RightStick.getX();
-//
-//        Hardware.log("turn:", turn);
+//        double x = OI.instance.gp1LeftStick.getY();
+//        double y = -OI.instance.gp1LeftStick.getX();
 //
 //        double magnitude = Math.sqrt(y*y + x*x);
-////        double angle = Util.getAngleFromPoint(x,y) - 90;
-//
-//        Hardware.log("magnitude:", magnitude);
-////        Hardware.log("angle:", angle);
 //
 //        double frontLeftPower = magnitude;
 //        double frontRightPower = magnitude;
@@ -143,77 +136,38 @@ public class JoystickDrive extends Command {
 //        Subsystems.instance.driveSubsystem.setMotors(frontLeftPower, frontRightPower,
 //                rearLeftPower, rearRightPower);
 
-        // Flipped because of the controller issue
-//        double x = OI.instance.gp1LeftStick.getY();
-//        double y = OI.instance.gp1LeftStick.getX();
-//        double MOTOR_POWER = 1;
-//
-//        if(OI.instance.gp1.a_button.pressedState())
-//            MOTOR_POWER *= 0.5;
-//
-//        // Forward
-//        if (y >= 0.5)
-//            //Subsystems.instance.mecanumDriveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER);
-//            Subsystems.instance.driveSubsystem.setMotors(-MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER,
-//                    MOTOR_POWER);
-//            // Backwards
-//        else if (y <= -0.5)
-//            //Subsystems.instance.mecanumDriveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER);
-//            Subsystems.instance.driveSubsystem.setMotors(MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER,
-//                    -MOTOR_POWER);
-//            // Right
-//        else if (x >= 0.5)
-//            //Subsystems.instance.mecanumDriveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER);
-//            Subsystems.instance.driveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, MOTOR_POWER,
-//                    -MOTOR_POWER);
-//            //
-//        else if (x <= -0.5)
-//            //Subsystems.instance.mecanumDriveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER);
-//            Subsystems.instance.driveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, -MOTOR_POWER,
-//                    MOTOR_POWER);
-//        else
-//            Subsystems.instance.driveSubsystem.setMotors(0, 0, 0, 0);
 
+//         Flipped because of the controller issue
         double x = OI.instance.gp1LeftStick.getY();
         double y = OI.instance.gp1LeftStick.getX();
+        
         double MOTOR_POWER = 1;
 
-        if (OI.instance.gp1.rightTriggerWrapper.pressedState())
+        if(OI.instance.gp1.a_button.pressedState())
             MOTOR_POWER *= 0.5;
 
-        double flPower = MOTOR_POWER;
-        double frPower = MOTOR_POWER;
-        double rlPower = MOTOR_POWER;
-        double rrPower = MOTOR_POWER;
-
         // Forward
-        if (y >= 0.3) {
+        if (y >= 0.5)
             //Subsystems.instance.mecanumDriveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER);
-            flPower = MOTOR_POWER;
-            frPower = MOTOR_POWER;
-            rlPower = -MOTOR_POWER;
-            rrPower = -MOTOR_POWER;
+            Subsystems.instance.driveSubsystem.setMotors(MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER,
+                    -MOTOR_POWER);
             // Backwards
-        } else if (y <= -0.3) {
+        else if (y <= -0.5)
             //Subsystems.instance.mecanumDriveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER);
-            flPower = -MOTOR_POWER;
-            frPower = -MOTOR_POWER;
-            rlPower = MOTOR_POWER;
-            rrPower = MOTOR_POWER;
-        }
-
-        if (x >= 0.3) {
+            Subsystems.instance.driveSubsystem.setMotors(-MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER,
+                    MOTOR_POWER);
+            // Right
+        else if (x >= 0.5)
             //Subsystems.instance.mecanumDriveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER);
-            frPower = -MOTOR_POWER;
-            rrPower = MOTOR_POWER;
-        } else if (x <= -0.3) {
+            Subsystems.instance.driveSubsystem.setMotors(MOTOR_POWER, -MOTOR_POWER, -MOTOR_POWER,
+                    MOTOR_POWER);
+            //
+        else if (x <= -0.5)
             //Subsystems.instance.mecanumDriveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, -MOTOR_POWER, MOTOR_POWER);
-            flPower = -MOTOR_POWER;
-            rlPower = MOTOR_POWER;
-        }
-
-
-        Subsystems.instance.driveSubsystem.setMotors(flPower, frPower, rlPower, rrPower);
+            Subsystems.instance.driveSubsystem.setMotors(-MOTOR_POWER, MOTOR_POWER, MOTOR_POWER,
+                    -MOTOR_POWER);
+        else
+            Subsystems.instance.driveSubsystem.setMotors(0, 0, 0, 0);
 
     }
 
