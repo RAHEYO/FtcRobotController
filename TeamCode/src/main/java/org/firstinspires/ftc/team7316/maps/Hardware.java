@@ -30,9 +30,7 @@ public class Hardware {
     public DcMotor frontRightMotor;
     public DcMotor backLeftMotor;
     public DcMotor backRightMotor;
-    public DcMotor shooterMotor;
     public DcMotor intakeMotor;
-    public DcMotor wobbleMotor;
     public DcMotor armMotor;
     public DcMotor spinnerMotor;
     public GyroWrapper gyroWrapper;
@@ -75,12 +73,10 @@ public class Hardware {
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //leftmotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

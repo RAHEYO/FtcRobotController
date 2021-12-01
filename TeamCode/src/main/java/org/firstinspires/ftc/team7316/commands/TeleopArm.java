@@ -24,7 +24,9 @@ public class TeleopArm extends Command {
         // Turning servo
         double y = OI.instance.gp1RightStick.getY();
 
-        if (y == 0 && (OI.instance.gp1.left_bumper.pressedState() || OI.instance.gp1.right_bumper.pressedState())) y = 70;
+        System.out.println("Turning percentage: " + y);
+
+        if (y == 0 && (OI.instance.gp1.left_bumper.pressedState() || OI.instance.gp1.right_bumper.pressedState())) y = 0.5;
 
         Subsystems.instance.armSub.turnServo(y);
     }
