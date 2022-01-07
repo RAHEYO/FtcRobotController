@@ -13,20 +13,20 @@ public class TeleopArm extends Command {
     @Override
     public void loop() {
         // Elevator
-        if (OI.instance.gp1.left_bumper.pressedState()) {
+        if (OI.instance.gp2.left_bumper.pressedState()) {
             Subsystems.instance.armSub.drop();
-        } else if (OI.instance.gp1.right_bumper.pressedState()) {
+        } else if (OI.instance.gp2.right_bumper.pressedState()) {
             Subsystems.instance.armSub.lift();
         } else {
             Subsystems.instance.armSub.reset();
         }
 
         // Turning servo
-        double y = OI.instance.gp1RightStick.getY();
+        double y = OI.instance.gp2.right_stick.getY();
 
         System.out.println("Turning percentage: " + y);
 
-        if (y == 0 && (OI.instance.gp1.left_bumper.pressedState() || OI.instance.gp1.right_bumper.pressedState())) y = 0.5;
+        if (y == 0 && (OI.instance.gp2.left_bumper.pressedState() || OI.instance.gp2.right_bumper.pressedState())) y = 0.5;
 
         Subsystems.instance.armSub.turnServo(y);
     }
