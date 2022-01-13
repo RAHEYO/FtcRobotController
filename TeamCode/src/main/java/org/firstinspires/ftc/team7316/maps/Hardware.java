@@ -58,13 +58,12 @@ public class Hardware {
      * Initialize all the hardware fields here
      */
     public Hardware (HardwareMap map) {
-        armMotor = map.dcMotor.get(armMotorName);
-
         frontLeftMotor = map.dcMotor.get(frontLeftMotorName);
         frontRightMotor= map.dcMotor.get(frontRightMotorName);
         backLeftMotor = map.dcMotor.get(backLeftMotorName);
         backRightMotor= map.dcMotor.get(backRightMotorName);
         intakeMotor = map.dcMotor.get(intakeMotorName);
+        armMotor = map.dcMotor.get(armMotorName);
         armServo = map.servo.get(armServoName);
         spinnerMotor = map.dcMotor.get(spinnerName);
 

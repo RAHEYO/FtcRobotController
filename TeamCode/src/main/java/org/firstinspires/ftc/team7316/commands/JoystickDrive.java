@@ -141,7 +141,7 @@ public class JoystickDrive extends Command {
         double x = OI.instance.gp1LeftStick.getY();
         double y = OI.instance.gp1LeftStick.getX();
         
-        double MOTOR_POWER = 1;
+        double MOTOR_POWER = 0.7;
 
         if(OI.instance.gp1.a_button.pressedState())
             MOTOR_POWER *= 0.5;
