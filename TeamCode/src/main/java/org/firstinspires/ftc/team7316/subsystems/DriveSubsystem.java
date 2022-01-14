@@ -26,6 +26,8 @@ public class DriveSubsystem extends Subsystem {
         return new JoystickDrive();
     }
 
+    public boolean isPIDDone() {return Hardware.instance.frontLeftMotorWrapper.pid.finished();}
+
     public void setMotors(double lFrontSet, double rFrontSet, double lBackSet, double rBackSet ) {
         Hardware.instance.frontLeftMotor.setPower(-lFrontSet);
         Hardware.instance.frontRightMotor.setPower(rFrontSet);
@@ -55,11 +57,15 @@ public class DriveSubsystem extends Subsystem {
         Hardware.instance.backLeftMotorWrapper.reset();
         Hardware.instance.backRightMotorWrapper.reset();
     }
-    public void driveWithPID(double dTime){
-        Hardware.instance.frontLeftMotorWrapper.setPowerPID(dTime);
-        Hardware.instance.frontRightMotorWrapper.setPowerPID(dTime);
-        Hardware.instance.backLeftMotorWrapper.setPowerPID(dTime);
-        Hardware.instance.backRightMotorWrapper.setPowerPID(dTime);
+    public void driveWithPID(double dTime, double lf, double rf, double lb, double rb){
+//        Hardware.instance.frontLeftMotorWrapper.setPowerPID(dTime);
+//        Hardware.instance.frontRightMotorWrapper.setPowerPID(dTime);
+//        Hardware.instance.backLeftMotorWrapper.setPowerPID(dTime);
+//        Hardware.instance.backRightMotorWrapper.setPowerPID(dTime);
+
+        double power = Hardware.instance.frontLeftMotorWrapper.getPowerFromPID(dTime);
+
+        setMotors(power*lf, power*-rf, power*-lb, power*rb);
     }
     public void setMotorPaths(MotionPath path){
         Hardware.instance.frontLeftMotorWrapper.setPath(path);

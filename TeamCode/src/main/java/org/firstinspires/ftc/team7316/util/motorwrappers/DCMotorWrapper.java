@@ -63,6 +63,21 @@ public class DCMotorWrapper {
         }
     }
 
+    public double getPowerFromPID(double dTime) {
+        if (!pid.usingPath()) {
+            pid.updateTargetTicksCurrent();
+        }
+
+        double pow = pid.getPower(getError(), dTime, motor.getCurrentPosition(), motor.getCurrentPosition() - lastTicks);
+        lastTicks = motor.getCurrentPosition();
+
+        if (Math.abs(pow) > maxPower) {
+            pow = (pow > 0) ? maxPower : -maxPower;
+        }
+
+        return pow;
+    }
+
     public boolean completedDistance() {
         return pid.finished() || Math.abs(pid.getTargetTicksFinal() - motor.getCurrentPosition()) < Constants.DISTANCE_ERROR_RANGE_TICKS;
 

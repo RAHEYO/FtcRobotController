@@ -42,7 +42,6 @@ public class DriveDistance extends Command {
 
         Subsystems.instance.driveSubsystem.setMotorPaths(pth);
         pathTime = pth.getTotalTime();
-        Subsystems.instance.driveSubsystem.setMotorPaths(pth);
         lastTime = System.currentTimeMillis();
     }
 
@@ -51,12 +50,12 @@ public class DriveDistance extends Command {
         long dMilis = System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
 
-        Subsystems.instance.driveSubsystem.driveWithPID((double)dMilis / 1000.0);
+        Subsystems.instance.driveSubsystem.driveWithPID((double)dMilis / 1000.0, 1, 1, 1, 1);
     }
 
     @Override
     public boolean shouldRemove() {
-        return false;
+        return Subsystems.instance.driveSubsystem.isPIDDone();
     }
 
     @Override
