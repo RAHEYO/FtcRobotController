@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.team7316.subsystems;
 
+import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.team7316.commands.TeleopIntake;
 import org.firstinspires.ftc.team7316.maps.Hardware;
 import org.firstinspires.ftc.team7316.util.commands.Command;
@@ -17,6 +19,7 @@ public class IntakeSubsystem extends Subsystem {
     public void outtake(){
         Hardware.instance.intakeMotor.setPower(outtakeSpeed);
     }
+    public void turnServo(Servo.Direction direction) { Hardware.instance.intakeServo.setDirection(direction); }
 
     @Override
     public Command defaultAutoCommand() {

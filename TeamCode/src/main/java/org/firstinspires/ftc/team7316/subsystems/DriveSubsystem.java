@@ -26,7 +26,7 @@ public class DriveSubsystem extends Subsystem {
         return new JoystickDrive();
     }
 
-    public boolean isPIDDone() {return Hardware.instance.frontLeftMotorWrapper.pid.finished();}
+    public boolean isPIDDone() { return Hardware.instance.frontLeftMotorWrapper.pid.finished(); }
 
     public void setMotors(double lFrontSet, double rFrontSet, double lBackSet, double rBackSet ) {
         Hardware.instance.frontLeftMotor.setPower(-lFrontSet);

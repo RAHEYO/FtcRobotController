@@ -31,23 +31,26 @@ public class Hardware {
     public DcMotor backLeftMotor;
     public DcMotor backRightMotor;
     public DcMotor intakeMotor;
+    public Servo intakeServo;
     public DcMotor armMotor;
+    public Servo armServo;
     public DcMotor spinnerMotor;
     public GyroWrapper gyroWrapper;
 
-    public Servo armServo;
 
     public BNO055IMU imu;
     public DCMotorWrapper frontLeftMotorWrapper;
     public DCMotorWrapper frontRightMotorWrapper;
     public DCMotorWrapper backLeftMotorWrapper;
     public DCMotorWrapper backRightMotorWrapper;
+    public DCMotorWrapper spinnerMotorWrapper;
     //Create all the hardware fields
     public final String frontLeftMotorName = "flmotor";
     public final String frontRightMotorName = "frmotor";
     public final String backLeftMotorName = "blmotor";
     public final String backRightMotorName = "brmotor";
     public final String intakeMotorName = "intakemotor";
+    public final String intakeServoName = "intakeservo";
     public final String imuname = "gyro";
     public final String armMotorName = "armmotor";
     public final String armServoName = "armservo";
@@ -63,6 +66,7 @@ public class Hardware {
         backLeftMotor = map.dcMotor.get(backLeftMotorName);
         backRightMotor= map.dcMotor.get(backRightMotorName);
         intakeMotor = map.dcMotor.get(intakeMotorName);
+        intakeServo = map.servo.get(intakeServoName);
         armMotor = map.dcMotor.get(armMotorName);
         armServo = map.servo.get(armServoName);
         spinnerMotor = map.dcMotor.get(spinnerName);
@@ -99,6 +103,7 @@ public class Hardware {
         frontRightMotorWrapper = new DCMotorWrapper(frontRightMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,frontRightMotorName), false);
         backLeftMotorWrapper = new DCMotorWrapper(backLeftMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,backLeftMotorName), false);
         backRightMotorWrapper = new DCMotorWrapper(backRightMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,backRightMotorName), false);
+        spinnerMotorWrapper = new DCMotorWrapper(spinnerMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,spinnerName), false);
     }
 
     public static void setHardwareMap(HardwareMap map) {

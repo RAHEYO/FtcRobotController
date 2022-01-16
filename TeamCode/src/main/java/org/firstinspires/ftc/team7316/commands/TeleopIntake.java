@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.team7316.commands;
 
+import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.team7316.maps.OI;
 import org.firstinspires.ftc.team7316.maps.Subsystems;
 import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.subsystems.Subsystem;
 
 public class TeleopIntake extends Command {
+    private boolean isIntakeSet = false;
     private boolean isIn = true;
 
     @Override
@@ -16,6 +19,14 @@ public class TeleopIntake extends Command {
 
     @Override
     public void loop() {
+        // Drop the intake
+        if (!isIntakeSet) {
+            Subsystems.instance.intake.turnServo(Servo.Direction.REVERSE);
+            isIntakeSet = true;
+        }
+        else Subsystems.instance.intake.turnServo(Servo.Direction.FORWARD);
+
+        // Turning the intake on and off
         if(OI.instance.gp1.y_button.pressedState()) {
             isIn = !isIn;
         }
@@ -26,6 +37,13 @@ public class TeleopIntake extends Command {
 
         if (isIn) { Subsystems.instance.intake.intake(); }
         else { Subsystems.instance.intake.outtake(); }
+
+        // Turning servo
+        double y = OI.instance.gp2.right_stick.getY();
+
+        System.out.println("Turning percentage: " + y);
+
+        Subsystems.instance.armSub.turnServo(y);
     }
 
     @Override
