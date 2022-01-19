@@ -30,9 +30,7 @@ public class SpinnerSubsystem extends Subsystem {
         this.setPower(backSpinSpeed);
     }
 
-    public boolean isPIDDone() { return Hardware.instance.spinnerMotorWrapper.pid.finished(); }
-
-    public void spinnWithPID(double dTime){
+    public void autoSpin() {
 //        Hardware.instance.frontLeftMotorWrapper.setPowerPID(dTime);
 //        Hardware.instance.frontRightMotorWrapper.setPowerPID(dTime);
 //        Hardware.instance.backLeftMotorWrapper.setPowerPID(dTime);
@@ -41,6 +39,6 @@ public class SpinnerSubsystem extends Subsystem {
 //        double power = Hardware.instance.spinnerMotorWrapper.getPowerFromPID(dTime);
 
 //        setMotors(power*lf, power*-rf, power*-lb, power*rb);
-        Hardware.instance.spinnerMotorWrapper.setPowerPID(dTime);
+        Hardware.instance.spinnerMotor.setPower(spinSpeed);
     }
 }

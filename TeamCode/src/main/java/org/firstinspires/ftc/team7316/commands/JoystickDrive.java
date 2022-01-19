@@ -138,8 +138,8 @@ public class JoystickDrive extends Command {
 
 
 //         Flipped because of the controller issue
-        double x = OI.instance.gp1LeftStick.getY();
-        double y = OI.instance.gp1RightStick.getX();
+        double x = -OI.instance.gp1RightStick.getX();
+        double y = -OI.instance.gp1LeftStick.getY();
         
         double MOTOR_POWER = 0.7;
 
