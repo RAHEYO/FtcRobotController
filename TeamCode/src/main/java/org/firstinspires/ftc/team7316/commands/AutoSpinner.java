@@ -30,7 +30,7 @@ public class AutoSpinner extends Command {
     }
 
     @Override
-    public boolean shouldRemove() { return (t.seconds() - startTime) > 7; }
+    public boolean shouldRemove() { return (t.seconds() - startTime) > 5; }
 
     @Override
     public void end() { Subsystems.instance.spinnerSub.reset(); }
