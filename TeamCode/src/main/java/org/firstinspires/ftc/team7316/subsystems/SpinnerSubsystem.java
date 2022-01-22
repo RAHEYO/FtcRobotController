@@ -39,6 +39,6 @@ public class SpinnerSubsystem extends Subsystem {
 //        double power = Hardware.instance.spinnerMotorWrapper.getPowerFromPID(dTime);
 
 //        setMotors(power*lf, power*-rf, power*-lb, power*rb);
-        Hardware.instance.spinnerMotor.setPower(spinSpeed);
+        Hardware.instance.spinnerMotor.setPower(backSpinSpeed);
     }
 }

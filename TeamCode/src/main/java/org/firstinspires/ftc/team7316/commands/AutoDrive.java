@@ -50,7 +50,7 @@ public class AutoDrive extends Command {
         long dMilis = System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
 
-        Subsystems.instance.driveSubsystem.driveWithPID((double)dMilis / 1000.0, 1, 1, 1, 1);
+        Subsystems.instance.driveSubsystem.driveWithPID((double)dMilis / 1000.0, -1, 1, -1, 1);
     }
 
     @Override

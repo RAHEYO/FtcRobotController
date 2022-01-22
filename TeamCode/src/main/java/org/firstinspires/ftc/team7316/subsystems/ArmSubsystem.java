@@ -3,6 +3,7 @@ package org.firstinspires.ftc.team7316.subsystems;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.team7316.commands.AutoArm;
 import org.firstinspires.ftc.team7316.commands.TeleopArm;
 import org.firstinspires.ftc.team7316.maps.Hardware;
 import org.firstinspires.ftc.team7316.util.commands.Command;
@@ -22,6 +23,8 @@ public class ArmSubsystem extends Subsystem {
     public void drop(){ Hardware.instance.armMotor.setPower(downPower); }
 
     public void turnServo(double position) { Hardware.instance.armServo.setPosition(position); }
+
+    public void autoTurnServo() { Hardware.instance.armServo.setDirection(Servo.Direction.FORWARD); }
 
     @Override
     public Command defaultAutoCommand() {
