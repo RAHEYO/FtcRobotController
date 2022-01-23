@@ -8,35 +8,24 @@ import org.firstinspires.ftc.team7316.util.commands.AutoDecision;
 import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.copypastaLib.CombinedPath;
 
-public class AutoArm extends Command {
+public class AutoDunkRecover extends Command {
     ElapsedTime t = new ElapsedTime();
-    long lastTime;
-
-//    public AutoArm(boolean shouldReact){
-//
-//    }
-
+    double lastTime;
 
     @Override
-    public void init() {
-        Subsystems.instance.armSub.reset();
-
-        lastTime = System.currentTimeMillis();
-    }
+    public void init() { lastTime = t.seconds(); }
 
     @Override
-    public void loop() {
-            Subsystems.instance.armSub.lift();
-        } else Subsystems.instance.armSub.autoTurnServo();
-    }
+    public void loop() { Subsystems.instance.armSub.turnServo(0); }
 
     @Override
     public boolean shouldRemove() {
-        return t.seconds() - lastTime > 5;
+        return t.seconds() - lastTime > 2;
     }
 
     @Override
-    public void end() { Subsystems.instance.armSub.reset(); }
+    public void end() { }
 
 }
+
 

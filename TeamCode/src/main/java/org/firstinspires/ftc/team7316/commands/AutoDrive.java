@@ -34,10 +34,12 @@ public class AutoDrive extends Command {
 
         CombinedPath.LongitudalTrapezoid pth;
         if(ticks>0){
-            pth = new CombinedPath.LongitudalTrapezoid(0,ticks,Constants.MAX_TICKS_SPEED,Constants.MAX_TICKS_ACCEL);
+            pth = new CombinedPath.LongitudalTrapezoid(0,ticks,Constants.MAX_TICKS_SPEED/2,
+                    Constants.MAX_TICKS_ACCEL);
         }
         else {
-            pth = new CombinedPath.LongitudalTrapezoid(0,ticks,-Constants.MAX_TICKS_SPEED,-Constants.MAX_TICKS_ACCEL);
+            pth = new CombinedPath.LongitudalTrapezoid(0,ticks,-Constants.MAX_TICKS_SPEED/2,
+                    -Constants.MAX_TICKS_ACCEL);
         }
 
         Subsystems.instance.driveSubsystem.setMotorPaths(pth);
