@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.team7316.subsystems;
 
+import org.firstinspires.ftc.team7316.commands.MecanumDrive;
 import org.firstinspires.ftc.team7316.maps.Hardware;
 import org.firstinspires.ftc.team7316.util.commands.Command;
-import org.firstinspires.ftc.team7316.commands.JoystickDrive;
+import org.firstinspires.ftc.team7316.commands.TireDrive;
 import org.firstinspires.ftc.team7316.util.copypastaLib.MotionPath;
 import org.firstinspires.ftc.team7316.util.subsystems.Subsystem;
 
@@ -23,7 +24,7 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     public Command defaultTeleopCommand() {
-        return new JoystickDrive();
+        return new MecanumDrive();
     }
 
     public boolean isPIDDone() { return Hardware.instance.frontLeftMotorWrapper.pid.finished(); }

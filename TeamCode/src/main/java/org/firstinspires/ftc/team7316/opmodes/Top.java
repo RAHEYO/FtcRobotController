@@ -16,7 +16,7 @@ import org.firstinspires.ftc.team7316.util.modes.AutoBaseOpMode;
 
 @Autonomous(name="PID Test")
 
-public class In extends AutoBaseOpMode {
+public class Top extends AutoBaseOpMode {
     ElapsedTime t = new ElapsedTime();
     double startTime;
     int stepIndex = 0;
