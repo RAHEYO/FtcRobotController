@@ -33,7 +33,6 @@ public class Hardware {
     public DcMotor backLeftMotor;
     public DcMotor backRightMotor;
     public DcMotor intakeMotor;
-    public Servo intakeServo;
     public DcMotor armMotor;
     public Servo armServo;
     public DcMotor spinnerMotor;
@@ -52,7 +51,6 @@ public class Hardware {
     public final String backLeftMotorName = "blmotor";
     public final String backRightMotorName = "brmotor";
     public final String intakeMotorName = "intakemotor";
-    public final String intakeServoName = "intakeservo";
     public final String imuname = "gyro";
     public final String armMotorName = "armmotor";
     public final String armServoName = "armservo";
@@ -68,7 +66,6 @@ public class Hardware {
         backLeftMotor = map.dcMotor.get(backLeftMotorName);
         backRightMotor= map.dcMotor.get(backRightMotorName);
         intakeMotor = map.dcMotor.get(intakeMotorName);
-        intakeServo = map.servo.get(intakeServoName);
         armMotor = map.dcMotor.get(armMotorName);
         armServo = map.servo.get(armServoName);
         spinnerMotor = map.dcMotor.get(spinnerName);

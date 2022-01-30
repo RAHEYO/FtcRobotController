@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.team7316.opmodes;
 
-import com.qualcomm.robotcore.hardware.ColorSensor;
+//import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.team7316.maps.Hardware;
 import org.firstinspires.ftc.team7316.util.modes.AutoBaseOpMode;
 
 @Autonomous(name="PID Test")
@@ -29,9 +30,7 @@ public class Top extends AutoBaseOpMode {
     @Override
     public void onLoop() {
         double distance = distanceSensor.getDistance(DistanceUnit.METER);
-
-        telemetry.addData("Distance: ", distance);
-        telemetry.update();
+        Hardware.log("Distance", distance);
 
 //        // In
 //        if (stepIndex == 0) {

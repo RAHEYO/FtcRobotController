@@ -8,7 +8,6 @@ import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.subsystems.Subsystem;
 
 public class TeleopIntake extends Command {
-    private boolean isIntakeSet = false;
     private boolean isIn = true;
 
     @Override
@@ -19,13 +18,6 @@ public class TeleopIntake extends Command {
 
     @Override
     public void loop() {
-        // Drop the intake
-        if (!isIntakeSet) {
-            Subsystems.instance.intake.turnServo(Servo.Direction.REVERSE);
-            isIntakeSet = true;
-        }
-        else Subsystems.instance.intake.turnServo(Servo.Direction.FORWARD);
-
         // Turning the intake on and off
         if(OI.instance.gp1.y_button.pressedState()) {
             isIn = !isIn;

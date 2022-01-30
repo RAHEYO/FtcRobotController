@@ -6,8 +6,8 @@ import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.subsystems.Subsystem;
 
 public class SpinnerSubsystem extends Subsystem {
-    private final double spinSpeed = 0.43;
-    private final double backSpinSpeed = -0.43;
+    private final double spinSpeed = 0.47;
+    private final double backSpinSpeed = -0.47;
 
     @Override
     public void reset() { this.setPower(0); }

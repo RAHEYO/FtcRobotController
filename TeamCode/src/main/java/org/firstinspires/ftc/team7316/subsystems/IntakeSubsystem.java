@@ -19,7 +19,6 @@ public class IntakeSubsystem extends Subsystem {
     public void outtake(){
         Hardware.instance.intakeMotor.setPower(outtakeSpeed);
     }
-    public void turnServo(Servo.Direction direction) { Hardware.instance.intakeServo.setDirection(direction); }
 
     @Override
     public Command defaultAutoCommand() {
