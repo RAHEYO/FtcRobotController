@@ -9,56 +9,31 @@ import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.copypastaLib.CombinedPath;
 
 public class AutoDrive extends Command {
-    private AutoDecision decision;
     ElapsedTime t = new ElapsedTime();
-    int ticks;
-    long lastTime;
-    double pathTime = 0;
+    double lastTime;
+    int motorPower;
+    double duration;
 
-    public AutoDrive(int ticks){
-        this.ticks=ticks;
+
+    public AutoDrive(int motorPower, double duration){
+        this.motorPower=motorPower;
+        this.duration = duration;
     }
 
-    public AutoDrive(AutoDecision decision){
-        this.decision = decision;
-    }
     @Override
     public void init() {
         requires(Subsystems.instance.driveSubsystem);
-        if(decision!=null){
-            this.ticks = (int) decision.findNumber();
-        }
-        t.reset();
-        Subsystems.instance.driveSubsystem.resetMotors();
-        Subsystems.instance.driveSubsystem.resetEncoders();
 
-        CombinedPath.LongitudalTrapezoid pth;
-        if(ticks>0){
-            pth = new CombinedPath.LongitudalTrapezoid(0,ticks,Constants.MAX_TICKS_SPEED/2,
-                    Constants.MAX_TICKS_ACCEL);
-        }
-        else {
-            pth = new CombinedPath.LongitudalTrapezoid(0,ticks,-Constants.MAX_TICKS_SPEED/2,
-                    -Constants.MAX_TICKS_ACCEL);
-        }
-
-        Subsystems.instance.driveSubsystem.setMotorPaths(pth);
-        pathTime = pth.getTotalTime();
-        lastTime = System.currentTimeMillis();
+        lastTime = t.seconds();
     }
 
     @Override
     public void loop() {
-        long dMilis = System.currentTimeMillis() - lastTime;
-        lastTime = System.currentTimeMillis();
-
-        Subsystems.instance.driveSubsystem.driveWithPID((double)dMilis / 1000.0, -1, 1, -1, 1);
+        Subsystems.instance.driveSubsystem.setMotors(motorPower, motorPower, motorPower, motorPower);
     }
 
     @Override
-    public boolean shouldRemove() {
-        return Subsystems.instance.driveSubsystem.isPIDDone();
-    }
+    public boolean shouldRemove() { return t.seconds() - lastTime > duration; }
 
     @Override
     public void end() {
