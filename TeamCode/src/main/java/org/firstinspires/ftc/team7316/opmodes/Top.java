@@ -6,7 +6,12 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.team7316.commands.AutoDrive;
+import org.firstinspires.ftc.team7316.commands.AutoElevator;
+import org.firstinspires.ftc.team7316.commands.AutoSlide;
 import org.firstinspires.ftc.team7316.maps.Hardware;
+import org.firstinspires.ftc.team7316.util.Scheduler;
+import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.modes.AutoBaseOpMode;
 
 @Autonomous(name="PID Test")
@@ -14,23 +19,83 @@ import org.firstinspires.ftc.team7316.util.modes.AutoBaseOpMode;
 public class Top extends AutoBaseOpMode {
     ElapsedTime t = new ElapsedTime();
     double startTime;
-    int stepIndex = 0;
 
-    public String distanceSensorName = "distanceSensor";
-    private DistanceSensor distanceSensor;
+    int stepIndex;
+    int elementLevel = -1;
+    Command nextMove;
+
+    public String lDistanceSensorName = "ldistancesensor";
+    public String rDistanceSensorName = "rdistancesensor";
+    private DistanceSensor lDistanceSensor;
+    private DistanceSensor rDistanceSensor;
+
+    AutoDrive forward = new AutoDrive(1, 2.5);
+    AutoDrive back = new AutoDrive(-1, 2.5);
+    AutoSlide slideLeft = new AutoSlide(-1, 1.1);
+    AutoSlide slideRight = new AutoSlide(1, 1.1);
 
 
     @Override
     public void onInit() {
         startTime = t.seconds();
 
-        distanceSensor = hardwareMap.get(DistanceSensor.class, distanceSensorName);
+        lDistanceSensor = hardwareMap.get(DistanceSensor.class, lDistanceSensorName);
+        rDistanceSensor = hardwareMap.get(DistanceSensor.class, rDistanceSensorName);
     }
 
     @Override
     public void onLoop() {
-        double distance = distanceSensor.getDistance(DistanceUnit.METER);
+        double distance = lDistanceSensor.getDistance(DistanceUnit.METER);
         Hardware.log("Distance", distance);
+
+        // If element in center, go to the dropping line~ Or go scan the next one~
+        if (stepIndex == 0) {
+            if (distance < 2) {
+               nextMove = new AutoDrive(1, 0.5);
+               elementLevel = 1;
+            }
+            else   nextMove = new AutoDrive(1, 0.3);
+
+            Scheduler.instance.add(nextMove);
+
+            if (nextMove.shouldRemove()) stepIndex += 1;
+
+            // Slide to the ShippingHub
+        } else if (stepIndex == 1) {
+            //
+            if (distance < 2)   elementLevel = 0;
+            else    elementLevel = 2;
+
+            nextMove = new AutoSlide(1, 1.1);
+            Scheduler.instance.add(nextMove);
+
+            if (nextMove.shouldRemove())    stepIndex += 1;
+
+            // Dunk it~
+        } else if (stepIndex == 2) {
+            nextMove = new AutoElevator(elementLevel);
+            Scheduler.instance.add(nextMove);
+
+            if (nextMove.shouldRemove())    stepIndex += 1;
+
+            // For loop iterate cycles
+        } else if (stepIndex == 3) {
+            for (int i = 0; i<9; ++i) {
+                nextMove = slideLeft;
+                if (nextMove.shouldRemove()) {
+                    nextMove = back;
+
+                    if (nextMove.shouldRemove()) {
+                        nextMove = forward;
+                        Scheduler.instance.add(nextMove);
+
+                        Hardware.log("Finished cycle: ", i);
+                    }
+                }
+
+
+            }
+        }
 
 //        // In
 //        if (stepIndex == 0) {

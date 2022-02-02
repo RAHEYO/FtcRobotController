@@ -1,20 +1,18 @@
 package org.firstinspires.ftc.team7316.maps;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
+import org.firstinspires.ftc.team7316.maps.Hardware;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.team7316.util.GyroWrapper;
 import org.firstinspires.ftc.team7316.util.PID;
 import org.firstinspires.ftc.team7316.util.motorwrappers.DCMotorWrapper;
+
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
 /**
  * Contains all the hardware names and actual hardware objects
@@ -28,14 +26,14 @@ public class Hardware {
 
     public static Telemetry telemetry;
 
-    public DcMotor frontLeftMotor;
-    public DcMotor frontRightMotor;
+    public DcMotorSimple frontLeftMotor;
+    public DcMotorSimple frontRightMotor;
     public DcMotor backLeftMotor;
     public DcMotor backRightMotor;
-    public DcMotor intakeMotor;
+    public DcMotorSimple intakeMotor;
     public DcMotor armMotor;
     public Servo armServo;
-    public DcMotor spinnerMotor;
+    public DcMotorSimple spinnerMotor;
     public GyroWrapper gyroWrapper;
 
 
@@ -61,24 +59,24 @@ public class Hardware {
      * Initialize all the hardware fields here
      */
     public Hardware (HardwareMap map) {
-        frontLeftMotor = map.dcMotor.get(frontLeftMotorName);
-        frontRightMotor= map.dcMotor.get(frontRightMotorName);
+        frontLeftMotor = map.get(DcMotorSimple.class, frontLeftMotorName);
+        frontRightMotor= map.get(DcMotorSimple.class, frontRightMotorName);
         backLeftMotor = map.dcMotor.get(backLeftMotorName);
         backRightMotor= map.dcMotor.get(backRightMotorName);
-        intakeMotor = map.dcMotor.get(intakeMotorName);
+        intakeMotor = map.get(DcMotorSimple.class, intakeMotorName);
         armMotor = map.dcMotor.get(armMotorName);
         armServo = map.servo.get(armServoName);
-        spinnerMotor = map.dcMotor.get(spinnerName);
+        spinnerMotor = map.get(DcMotorSimple.class, spinnerName);
 
 
-        frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-        frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -98,11 +96,11 @@ public class Hardware {
 ////        imu.initialize(gyroParams);
 ////        gyroWrapper = new GyroWrapper(imu);
 
-        frontLeftMotorWrapper = new DCMotorWrapper(frontLeftMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,frontLeftMotorName), true);
-        frontRightMotorWrapper = new DCMotorWrapper(frontRightMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,frontRightMotorName), false);
+//        frontLeftMotorWrapper = new DCMotorWrapper(frontLeftMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,frontLeftMotorName), true);
+//        frontRightMotorWrapper = new DCMotorWrapper(frontRightMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,frontRightMotorName), false);
         backLeftMotorWrapper = new DCMotorWrapper(backLeftMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,backLeftMotorName), false);
         backRightMotorWrapper = new DCMotorWrapper(backRightMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,backRightMotorName), false);
-        spinnerMotorWrapper = new DCMotorWrapper(spinnerMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,spinnerName), false);
+//        spinnerMotorWrapper = new DCMotorWrapper(spinnerMotor, new PID(Constants.DRIVE_P, Constants.DRIVE_I, Constants.DRIVE_D, Constants.MAX_TICKS_SPEED,spinnerName), false);
     }
 
     public static void setHardwareMap(HardwareMap map) {

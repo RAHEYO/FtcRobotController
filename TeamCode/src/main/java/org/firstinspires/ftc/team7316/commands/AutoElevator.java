@@ -12,6 +12,12 @@ public class AutoElevator extends Command {
     ElapsedTime t = new ElapsedTime();
     long lastTime;
 
+    int elementLevel;
+
+    public AutoElevator(int elementLevel) {
+        this.elementLevel = elementLevel;
+    }
+
 
     @Override
     public void init() {
@@ -25,7 +31,9 @@ public class AutoElevator extends Command {
 
     @Override
     public boolean shouldRemove() {
-        return t.seconds() - lastTime > 3;
+        if (elementLevel == 0) return t.seconds() - lastTime > 1;
+        else if (elementLevel == 1) return t.seconds() - lastTime > 1.7;
+        else return t.seconds() - lastTime > 2.5;
     }
 
     @Override
