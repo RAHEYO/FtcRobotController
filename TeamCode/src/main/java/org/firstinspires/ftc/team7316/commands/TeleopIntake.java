@@ -22,10 +22,6 @@ public class TeleopIntake extends Command {
         if(OI.instance.gp1.y_button.pressedState()) {
             isIn = !isIn;
         }
-        else {
-            Subsystems.instance.intake.reset();
-        }
-
 
         if (isIn) { Subsystems.instance.intake.intake(); }
         else { Subsystems.instance.intake.outtake(); }
