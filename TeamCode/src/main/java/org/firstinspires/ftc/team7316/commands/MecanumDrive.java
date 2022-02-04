@@ -15,9 +15,9 @@ public class MecanumDrive extends Command {
 
     @Override
     public void loop() {
-        double y = OI.instance.gp1RightStick.getX();
-        double x = OI.instance.gp1LeftStick.getX();
-        double turn = OI.instance.gp1LeftStick.getY();
+        double y = OI.instance.gp1LeftStick.getY();
+        double x = -OI.instance.gp1LeftStick.getX();
+        double turn = OI.instance.gp1RightStick.getX();
 
         Hardware.log("x:", x);
         Hardware.log("y:", y);
@@ -57,18 +57,18 @@ public class MecanumDrive extends Command {
         Hardware.log("rotated x:", rotatedX);
         Hardware.log("rotated y:", rotatedY);
 
-        if(OI.instance.gp1.a_button.pressedState()){
-            Subsystems.instance.driveSubsystem.setMotors(.7*(rotatedY + turn),
-                    .7*(rotatedX - turn),
-                    .7*(rotatedX + turn), .7*(rotatedY - turn));
+        if(OI.instance.gp1.a_button.pressedState())
+        {
+            rotatedX *= .7;
+            rotatedY *= .7;
+            turn *= .7;
         }
-        else if(magnitude==0){
+
+        if (magnitude==0)
             Subsystems.instance.driveSubsystem.setMotors(turn, -turn, turn,-turn);
-        }
-        else{
+        else
             Subsystems.instance.driveSubsystem.setMotors(rotatedY + turn, rotatedX - turn,
                     rotatedX + turn, rotatedY - turn);
-        }
 
     }
 

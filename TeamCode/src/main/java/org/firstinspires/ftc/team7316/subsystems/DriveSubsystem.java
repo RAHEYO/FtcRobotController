@@ -31,10 +31,10 @@ public class DriveSubsystem extends Subsystem {
     public boolean isPIDDone() { return Hardware.instance.frontLeftMotorWrapper.pid.finished(); }
 
     public void setMotors(double lFrontSet, double rFrontSet, double lBackSet, double rBackSet ) {
-        Hardware.instance.frontLeftMotor.setPower(-lFrontSet);
-        Hardware.instance.frontRightMotor.setPower(rFrontSet);
+        Hardware.instance.frontLeftMotor.setPower(lFrontSet);
+        Hardware.instance.frontRightMotor.setPower(-rFrontSet);
         Hardware.instance.backLeftMotor.setPower(lBackSet);
-        Hardware.instance.backRightMotor.setPower(-rBackSet);
+        Hardware.instance.backRightMotor.setPower(rBackSet);
     }
 
     public void setSides(double leftset, double rightset){

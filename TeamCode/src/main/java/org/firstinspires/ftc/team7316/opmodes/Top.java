@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.team7316.commands.AutoDrive;
 import org.firstinspires.ftc.team7316.commands.AutoElevator;
 import org.firstinspires.ftc.team7316.commands.AutoSlide;
+import org.firstinspires.ftc.team7316.commands.AutoSpinner;
 import org.firstinspires.ftc.team7316.maps.Hardware;
 import org.firstinspires.ftc.team7316.util.Scheduler;
 import org.firstinspires.ftc.team7316.util.commands.Command;
@@ -47,14 +48,14 @@ public class Top extends AutoBaseOpMode {
     public void onLoop() {
         double distance = lDistanceSensor.getDistance(DistanceUnit.METER);
         Hardware.log("Distance", distance);
-
+        
+        // TOP
         // If element in center, go to the dropping line~ Or go scan the next one~
         if (stepIndex == 0) {
             if (distance < 2) {
-               nextMove = new AutoDrive(1, 0.5);
                elementLevel = 1;
             }
-            else   nextMove = new AutoDrive(1, 0.3);
+            nextMove = new AutoDrive(1, 0.5);
 
             Scheduler.instance.add(nextMove);
 
@@ -62,7 +63,6 @@ public class Top extends AutoBaseOpMode {
 
             // Slide to the ShippingHub
         } else if (stepIndex == 1) {
-            //
             if (distance < 2)   elementLevel = 0;
             else    elementLevel = 2;
 
@@ -97,79 +97,74 @@ public class Top extends AutoBaseOpMode {
             }
         }
 
-//        // In
-//        if (stepIndex == 0) {
-//            Scheduler.instance.add(new AutoDrive(Constants.inchesToTicks(1.35))); // 23
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 1 && t.seconds() - startTime > 3) {
-//            // Rotate left
-//
-//            Scheduler.instance.add(new AutoRotate(Constants.inchesToTicks(1.13)));
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 2 && t.seconds() - startTime > 5) {
-//            // Spin duck
-//
-//            Scheduler.instance.add(new AutoSpinner());
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 3 && t.seconds() - startTime > 7) {
-//            // Back
-//
-//            Scheduler.instance.add(new AutoDrive(Constants.inchesToTicks(-1.55)));
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 4 && t.seconds() - startTime > 9) {
-//            // Rotate right
-//
-//            Scheduler.instance.add(new AutoRotate(Constants.inchesToTicks(-0.81)));
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 5 && t.seconds() - startTime > 11) {
-//            // Back
-//
-//            Scheduler.instance.add(new AutoDrive(Constants.inchesToTicks(-1.3)));
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 6 && t.seconds() - startTime > 13) {
-//            // Elevate
-//
-//            Scheduler.instance.add(new AutoElevator());
-//
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 7 && t.seconds() - startTime > 16) {
-//            // Dunk
-//
-//            Scheduler.instance.add(new AutoDunk());
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 8 && t.seconds() - startTime > 18) {
-//            // Dunk recover
-//
-//            Scheduler.instance.add(new AutoDunkRecover());
-//            Scheduler.instance.add(new AutoElevatorRecover());
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 9 && t.seconds() - startTime > 20) {
-//            // Forward towards the blue box
-//
-//            Scheduler.instance.add(new AutoDrive(Constants.inchesToTicks(2))); // -15
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 10 && t.seconds() - startTime > 23) {
-//            // Rotate left
-//
-//            Scheduler.instance.add(new AutoRotate(Constants.inchesToTicks(1.39)));
-//
-//            ++stepIndex;
-//        } else if (stepIndex == 11 && t.seconds() - startTime > 26) {
-//            // Forward fully park
-//
-//            Scheduler.instance.add(new AutoDrive(Constants.inchesToTicks(0.5)));
-//
-//            ++stepIndex;
-//        }
+        // BOTTOM
+        if (stepIndex == 0) {
+            if (distance < 2) {
+                nextMove = new AutoDrive(1, 0.9);
+                elementLevel = 1;
+            }
+            else   nextMove = new AutoDrive(1, 0.3);
+
+            Scheduler.instance.add(nextMove);
+
+            if (nextMove.shouldRemove()) ++stepIndex;
+
+            // Go to the duck spinner
+        } else if (stepIndex == 1) {
+            if (distance < 2) elementLevel = 0;
+            else elementLevel = 2;
+
+            nextMove = new AutoDrive(1, 0.9);
+            Scheduler.instance.add(nextMove);
+
+            if (nextMove.shouldRemove()) ++stepIndex;
+
+            // Spin the duck
+        } else if (stepIndex == 2) {
+            nextMove = new AutoSpinner();
+            Scheduler.instance.add(nextMove);
+
+            if (nextMove.shouldRemove()) ++stepIndex;
+
+        } else if (stepIndex == 3) {
+            nextMove = new AutoSlide(1, 1);
+            Scheduler.instance.add(nextMove);
+
+            if (nextMove.shouldRemove()) ++stepIndex;
+
+            // Move back to the Shipping Hub
+        } else if (stepIndex == 4) {
+            nextMove = new AutoDrive(-1, 1);
+            Scheduler.instance.add(nextMove);
+
+            if (nextMove.shouldRemove())    ++stepIndex;
+
+            // Dunk it~
+        } else if (stepIndex ==5) {
+            nextMove = new AutoElevator(elementLevel);
+            Scheduler.instance.add(nextMove);
+
+            if (nextMove.shouldRemove())    stepIndex += 1;
+
+            // For loop iterate cycles
+        } else if (stepIndex == 6) {
+            for (int i = 0; i<9; ++i) {
+                nextMove = slideLeft;
+                if (nextMove.shouldRemove()) {
+                    nextMove = back;
+
+                    if (nextMove.shouldRemove()) {
+                        nextMove = forward;
+                        Scheduler.instance.add(nextMove);
+
+                        Hardware.log("Finished cycle: ", i);
+                    }
+                }
+
+
+            }
+        }
+        
+        
     }
 }
