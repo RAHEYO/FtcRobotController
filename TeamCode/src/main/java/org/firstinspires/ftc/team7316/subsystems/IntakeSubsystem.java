@@ -8,8 +8,8 @@ import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.subsystems.Subsystem;
 
 public class IntakeSubsystem extends Subsystem {
-    private final double intakeSpeed = 1;
-    private final double outtakeSpeed = -1;
+    private final double intakeSpeed = -1;
+    private final double outtakeSpeed = 1;
 
     @Override
     public void reset() {
