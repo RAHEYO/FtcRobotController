@@ -9,11 +9,8 @@ import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.copypastaLib.CombinedPath;
 
 public class AutoSpinner extends Command {
-//    private AutoDecision decision;
     ElapsedTime t = new ElapsedTime();
     double startTime;
-//    long lastTime;
-//    double pathTime = 0;
 
     @Override
     public void init() {
@@ -22,10 +19,6 @@ public class AutoSpinner extends Command {
 
     @Override
     public void loop() {
-//        long dMilis = System.currentTimeMillis() - lastTime;
-//        lastTime = System.currentTimeMillis();
-
-//        Subsystems.instance.driveSubsystem.driveWithPID((double)dMilis / 1000.0, 1, 1, 1, 1);
         Subsystems.instance.spinnerSub.autoSpin();
     }
 

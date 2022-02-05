@@ -8,13 +8,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.team7316.commands.AutoDrive;
 import org.firstinspires.ftc.team7316.commands.AutoDunk;
-import org.firstinspires.ftc.team7316.commands.AutoDunkRecover;
 import org.firstinspires.ftc.team7316.commands.AutoElevator;
 import org.firstinspires.ftc.team7316.commands.AutoSlide;
 import org.firstinspires.ftc.team7316.commands.AutoSpinner;
 import org.firstinspires.ftc.team7316.maps.Hardware;
 import org.firstinspires.ftc.team7316.util.Scheduler;
-import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.modes.AutoBaseOpMode;
 
 @Autonomous(name="PID Test")
@@ -33,7 +31,9 @@ public class Top extends AutoBaseOpMode {
     private DistanceSensor rDistanceSensor;
 
     AutoDrive forward = new AutoDrive(1, 2.5);
+    AutoDrive farForward = new AutoDrive(1, 4.5);
     AutoDrive back = new AutoDrive(-1, 2.5);
+    AutoDrive farBack = new AutoDrive(-1, 4.5);
     AutoSlide slideLeft = new AutoSlide(-1, 1.1);
     AutoSlide slideRight = new AutoSlide(1, 1.1);
 
@@ -48,8 +48,8 @@ public class Top extends AutoBaseOpMode {
 
     @Override
     public void onLoop() {
-        double distance = lDistanceSensor.getDistance(DistanceUnit.CM);
-        Hardware.log("Distance", distance);
+        double lDistance = lDistanceSensor.getDistance(DistanceUnit.CM);
+        Hardware.log("Distance", lDistance);
 
         // TOP
         // Slide left near the element for detection!~
@@ -57,8 +57,7 @@ public class Top extends AutoBaseOpMode {
             if (Scheduler.instance.getBuffer().isEmpty()) {
                 Scheduler.instance.add(new AutoSlide(-1, 0.7));
 
-                if (distance < 5)   elementLevel = 1;
-
+                if (lDistance < 5)   elementLevel = 1;
 
                 stepIndex += 1;
             }
@@ -74,7 +73,7 @@ public class Top extends AutoBaseOpMode {
             // Slide to the ShippingHub
         } else if (stepIndex == 2) {
             if (elementLevel != -1) {
-                if (distance < 10)   elementLevel = 0;
+                if (lDistance < 10)   elementLevel = 0;
                 else    elementLevel = 2;
             }
 
@@ -102,84 +101,111 @@ public class Top extends AutoBaseOpMode {
 
             // For loop iterate cycles
         } else if (stepIndex == 5) {
-            cycle(cycleIndex);
+            nextCycleMotion(cycleIndex, true);
             Hardware.log("Finished cycle: ", cycleIndex);
         }
 
-//        // BOTTOM
-//        if (stepIndex == 0) {
-//            if (distance < 2) {
-//                nextMove = new AutoDrive(1, 0.9);
-//                elementLevel = 1;
-//            }
-//            else   nextMove = new AutoDrive(1, 0.3);
-//
-//            Scheduler.instance.add(nextMove);
-//
-//            if (nextMove.shouldRemove()) ++stepIndex;
-//
-//            // Go to the duck spinner
-//        } else if (stepIndex == 1) {
-//            if (distance < 2) elementLevel = 0;
-//            else elementLevel = 2;
-//
-//            nextMove = new AutoDrive(1, 0.9);
-//            Scheduler.instance.add(nextMove);
-//
-//            if (nextMove.shouldRemove()) ++stepIndex;
-//
-//            // Spin the duck
-//        } else if (stepIndex == 2) {
-//            nextMove = new AutoSpinner();
-//            Scheduler.instance.add(nextMove);
-//
-//            if (nextMove.shouldRemove()) ++stepIndex;
-//
-//        } else if (stepIndex == 3) {
-//            nextMove = new AutoSlide(1, 1);
-//            Scheduler.instance.add(nextMove);
-//
-//            if (nextMove.shouldRemove()) ++stepIndex;
-//
-//            // Move back to the Shipping Hub
-//        } else if (stepIndex == 4) {
-//            nextMove = new AutoDrive(-1, 1);
-//            Scheduler.instance.add(nextMove);
-//
-//            if (nextMove.shouldRemove())    ++stepIndex;
-//
-//            // Dunk it~
-//        } else if (stepIndex ==5) {
-//            nextMove = new AutoElevator(elementLevel);
-//            Scheduler.instance.add(nextMove);
-//
-//            if (nextMove.shouldRemove())    stepIndex += 1;
-//
-//            // For loop iterate cycles
-//        } else if (stepIndex == 6) {
-//            for (int i = 0; i<9; ++i) {
-//                nextMove = slideLeft;
-//                if (nextMove.shouldRemove()) {
-//                    nextMove = back;
-//
-//                    if (nextMove.shouldRemove()) {
-//                        nextMove = forward;
-//                        Scheduler.instance.add(nextMove);
-//
-//                        Hardware.log("Finished cycle: ", i);
-//                    }
-//                }
-//
-//
-//            }
-//        }
 
+        double rDistance = rDistanceSensor.getDistance(DistanceUnit.CM);
+        Hardware.log("Distance", rDistance);
+
+        // BOTTOM
+        // Sliding right to the element!~
+        if (stepIndex == 0) {
+            if (Scheduler.instance.getBuffer().isEmpty()) {
+                Scheduler.instance.add(new AutoSlide(1, 0.7));
+
+                if (rDistance < 5)   elementLevel = 1;
+
+                ++stepIndex;
+            }
+
+            // If element in center, ignore this~ Or go scan the next one (0 position)~
+        } else if (stepIndex == 1) {
+            if (Scheduler.instance.getBuffer().isEmpty()) {
+                if (elementLevel != -1) {
+                    Scheduler.instance.add(new AutoDrive(1, 0.3));
+                    if (rDistance < 5)   elementLevel = 0;
+                }
+
+                ++stepIndex;
+            }
+
+            // Slide to the left
+        } else if (stepIndex == 2) {
+            if (Scheduler.instance.getBuffer().isEmpty()) {
+                Scheduler.instance.add(new AutoSlide(-1, 0.7));
+
+                ++stepIndex;
+            }
+
+            // Forward towards the Duck Spinner~
+        } else if (stepIndex == 3) {
+            if (Scheduler.instance.getBuffer().isEmpty()) {
+                Scheduler.instance.add(elementLevel == 1?
+                        new AutoDrive(1, 0.7)
+                        : new AutoDrive(1, 0.3)
+                );
+
+                ++stepIndex;
+            }
+
+            // Spin the Ducks
+        } else if (stepIndex == 4) {
+            if (Scheduler.instance.getBuffer().isEmpty()) {
+                Scheduler.instance.add(new AutoSpinner());
+
+                ++stepIndex;
+            }
+
+        // Slide right to line up with the Shipping Hub preparing for dunking!~
+        } else if (stepIndex == 5) {
+            if (Scheduler.instance.getBuffer().isEmpty()) {
+                Scheduler.instance.add(new AutoSlide(1, 1));
+
+                ++stepIndex;
+            }
+
+        } else if (stepIndex == 6) {
+            if (Scheduler.instance.getBuffer().isEmpty()) {
+                Scheduler.instance.add(new AutoDrive(-1, 1.3));
+
+                ++stepIndex;
+            }
+
+            // Elevate to dunk~
+        } else if (stepIndex == 7) {
+            if (Scheduler.instance.getBuffer().isEmpty()) {
+                Scheduler.instance.add(new AutoElevator(elementLevel));
+
+                ++stepIndex;
+            }
+
+            // Dunk it!
+        } else if (stepIndex == 8) {
+            if (Scheduler.instance.getBuffer().isEmpty()) {
+                Scheduler.instance.add(new AutoDunk());
+
+                ++stepIndex;
+            }
+
+            // For loop iterate cycles
+        } else if (stepIndex == 9) {
+            if (cycleIndex == 2) ++stepIndex;
+
+            nextCycleMotion(cycleIndex, false);
+            Hardware.log("Finished cycle: ", cycleIndex);
+
+            ++cycleIndex;
+        } else {
+            Hardware.log("Auto Finished IsTop: ", false);
+        }
 
     }
 
-    private void cycle(int cycleIndex) {
-        if (cycleIndex == 0)    Scheduler.instance.add(slideLeft);
-        else if (cycleIndex == 1)   Scheduler.instance.add(forward);
-        else if (cycleIndex == 2)   Scheduler.instance.add(back);
+    private void nextCycleMotion(int cycleIndex, boolean isTop) {
+        if (cycleIndex == 0)    Scheduler.instance.add(isTop? slideRight : slideLeft);
+        else if (cycleIndex == 1)   Scheduler.instance.add(isTop? farBack : forward);
+        else if (cycleIndex == 2)   Scheduler.instance.add(isTop? farForward : back);
     }
 }
