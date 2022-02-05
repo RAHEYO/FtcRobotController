@@ -48,37 +48,44 @@ public class Top extends AutoBaseOpMode {
 
     @Override
     public void onLoop() {
-        double distance = lDistanceSensor.getDistance(DistanceUnit.METER);
+        double distance = lDistanceSensor.getDistance(DistanceUnit.CM);
         Hardware.log("Distance", distance);
 
         // TOP
-        // If element in center, go to the dropping line~ Or go scan the next one~
+        // Slide left near the element for detection!~
         if (stepIndex == 0) {
-            if (distance < 2) {
-               elementLevel = 1;
+            if (Scheduler.instance.getBuffer().isEmpty()) {
+                Scheduler.instance.add(new AutoSlide(-1, 0.7));
+
+                if (distance < 5)   elementLevel = 1;
+
+
+                stepIndex += 1;
             }
+
+        // If element in center, go to the dropping line~ Or go scan the next one~
+        } else if (stepIndex == 1) {
             if (Scheduler.instance.getBuffer().isEmpty()) {
                 Scheduler.instance.add(new AutoDrive(-1, 0.3));
 
                 stepIndex += 1;
             }
 
-
             // Slide to the ShippingHub
-        } else if (stepIndex == 1) {
+        } else if (stepIndex == 2) {
             if (elementLevel != -1) {
-                if (distance < 2)   elementLevel = 0;
+                if (distance < 10)   elementLevel = 0;
                 else    elementLevel = 2;
             }
 
             if (Scheduler.instance.getBuffer().isEmpty()) {
-                Scheduler.instance.add(new AutoSlide(1, 1.1));
+                Scheduler.instance.add(new AutoSlide(-1, 0.5));
 
                 stepIndex += 1;
             }
 
             // Elevate to dunk~
-        } else if (stepIndex == 2) {
+        } else if (stepIndex == 3) {
             if (Scheduler.instance.getBuffer().isEmpty()) {
                 Scheduler.instance.add(new AutoElevator(elementLevel));
 
@@ -86,7 +93,7 @@ public class Top extends AutoBaseOpMode {
             }
 
             // Dunk it!
-        } else if (stepIndex == 3) {
+        } else if (stepIndex == 4) {
             if (Scheduler.instance.getBuffer().isEmpty()) {
                 Scheduler.instance.add(new AutoDunk());
 
@@ -94,7 +101,7 @@ public class Top extends AutoBaseOpMode {
             }
 
             // For loop iterate cycles
-        } else if (stepIndex == 4) {
+        } else if (stepIndex == 5) {
             cycle(cycleIndex);
             Hardware.log("Finished cycle: ", cycleIndex);
         }
