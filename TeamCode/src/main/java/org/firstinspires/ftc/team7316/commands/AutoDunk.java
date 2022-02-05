@@ -3,6 +3,7 @@ package org.firstinspires.ftc.team7316.commands;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.team7316.maps.Constants;
+import org.firstinspires.ftc.team7316.maps.Hardware;
 import org.firstinspires.ftc.team7316.maps.Subsystems;
 import org.firstinspires.ftc.team7316.util.commands.AutoDecision;
 import org.firstinspires.ftc.team7316.util.commands.Command;
@@ -20,11 +21,13 @@ public class AutoDunk extends Command {
 
     @Override
     public boolean shouldRemove() {
-        return t.seconds() - lastTime > 2;
+        return t.seconds() - lastTime > 1.5;
     }
 
     @Override
-    public void end() { }
+    public void end() {
+        Hardware.instance.armServo.setPosition(0);
+    }
 
 }
 
