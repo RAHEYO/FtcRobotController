@@ -15,8 +15,8 @@ public class MecanumDrive extends Command {
 
     @Override
     public void loop() {
-        double y = -OI.instance.gp1LeftStick.getY();
-        double x = OI.instance.gp1LeftStick.getX();
+        double y = OI.instance.gp1LeftStick.getY();
+        double x = -OI.instance.gp1LeftStick.getX();
         double turn = OI.instance.gp1RightStick.getX();
 
         Hardware.log("x:", x);
