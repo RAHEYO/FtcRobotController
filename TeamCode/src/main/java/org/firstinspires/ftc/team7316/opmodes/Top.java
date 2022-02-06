@@ -159,30 +159,39 @@ public class Top extends AutoBaseOpMode {
                 commandList.add(new AutoDrive(-1, 0.6));
                 timeList.add(timeList.get(timeList.size()-1)+5);
             } else {
+                // Go forward towards the Carousel
                 commandList.add(new AutoDrive(1, 0.6));
                 timeList.add(0.0);
 
+                // Spin the Fu**ing DUCK!~ @_@
                 commandList.add(new AutoSpinner(isRed));
                 timeList.add(timeList.get(timeList.size()-1)+1);
 
+                // Slide to the Left to line up with the Shipping Hub
                 commandList.add(new AutoSlide(-1, 1.3));
                 timeList.add(timeList.get(timeList.size()-1)+5);
 
+                // Drive back to the Dunking Position~
                 commandList.add(new AutoDrive(-1, 1));
                 timeList.add(timeList.get(timeList.size()-1)+2);
 
+                // Elevate up! #_#
                 commandList.add(elevate);
                 timeList.add(timeList.get(timeList.size()-1)+1);
 
+                // Dunk it LOL!
                 commandList.add(dunk);
                 timeList.add(timeList.get(timeList.size()-1)+1.7);
 
+                // Elevate recover $_$
                 commandList.add(elevateRecover);
                 timeList.add(timeList.get(timeList.size()-1)+1.7);
 
+                // Drive forward to the line up with the Parking Lot!
                 commandList.add(new AutoDrive(1, 1.1));
                 timeList.add(timeList.get(timeList.size()-1)+1.7);
 
+                // Slide right a bit and Park fully! &_&
                 commandList.add(new AutoSlide(1, 0.6));
                 timeList.add(timeList.get(timeList.size()-1)+2);
             }
