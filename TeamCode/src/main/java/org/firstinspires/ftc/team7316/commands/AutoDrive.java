@@ -11,11 +11,11 @@ import org.firstinspires.ftc.team7316.util.copypastaLib.CombinedPath;
 public class AutoDrive extends Command {
     ElapsedTime t = new ElapsedTime();
     double lastTime;
-    int motorPower;
+    double motorPower;
     double duration;
 
 
-    public AutoDrive(int motorPower, double duration){
+    public AutoDrive(double motorPower, double duration){
         this.motorPower=motorPower;
         this.duration = duration;
     }

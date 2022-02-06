@@ -3,6 +3,7 @@ package org.firstinspires.ftc.team7316.commands;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.team7316.maps.Constants;
+import org.firstinspires.ftc.team7316.maps.Hardware;
 import org.firstinspires.ftc.team7316.maps.Subsystems;
 import org.firstinspires.ftc.team7316.util.commands.AutoDecision;
 import org.firstinspires.ftc.team7316.util.commands.Command;
@@ -20,10 +21,12 @@ public class AutoSpinner extends Command {
     @Override
     public void loop() {
         Subsystems.instance.spinnerSub.autoSpin();
+
+        Hardware.log("Spinner DTime: ", t.seconds()-startTime);
     }
 
     @Override
-    public boolean shouldRemove() { return (t.seconds() - startTime) > 5; }
+    public boolean shouldRemove() { return t.seconds() - startTime > 5; }
 
     @Override
     public void end() { Subsystems.instance.spinnerSub.reset(); }

@@ -30,8 +30,6 @@ public class AutoElevator extends Command {
     @Override
     public void loop() {
         Subsystems.instance.armSub.lift();
-
-        Hardware.log("Elevator DTime: ", t.seconds()-lastTime);
     }
 
     @Override
