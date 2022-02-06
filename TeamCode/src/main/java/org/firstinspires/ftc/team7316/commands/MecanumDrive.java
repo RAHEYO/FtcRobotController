@@ -57,7 +57,7 @@ public class MecanumDrive extends Command {
         Hardware.log("rotated x:", rotatedX);
         Hardware.log("rotated y:", rotatedY);
 
-        if(OI.instance.gp1.a_button.pressedState())
+        if(OI.instance.gp1.rightTriggerWrapper.pressedState())
         {
             rotatedX *= .7;
             rotatedY *= .7;
