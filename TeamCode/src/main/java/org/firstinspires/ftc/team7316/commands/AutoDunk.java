@@ -17,7 +17,7 @@ public class AutoDunk extends Command {
     public void init() { lastTime = t.seconds(); }
 
     @Override
-    public void loop() { Subsystems.instance.armSub.turnServo(0.7); }
+    public void loop() { Subsystems.instance.armSub.turnServo(0.5); }
 
     @Override
     public boolean shouldRemove() {

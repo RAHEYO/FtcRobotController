@@ -8,10 +8,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.team7316.commands.AutoDrive;
 import org.firstinspires.ftc.team7316.commands.AutoDunk;
+import org.firstinspires.ftc.team7316.commands.AutoDunkRecover;
 import org.firstinspires.ftc.team7316.commands.AutoElevator;
+import org.firstinspires.ftc.team7316.commands.AutoElevatorRecover;
 import org.firstinspires.ftc.team7316.commands.AutoSlide;
-import org.firstinspires.ftc.team7316.commands.AutoSpinner;
 import org.firstinspires.ftc.team7316.maps.Hardware;
+import org.firstinspires.ftc.team7316.maps.Subsystems;
 import org.firstinspires.ftc.team7316.util.Scheduler;
 import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.modes.AutoBaseOpMode;
@@ -25,7 +27,6 @@ public class Top extends AutoBaseOpMode {
     double startTime;
 
     int stepIndex;
-    int cycleIndex = 0;
     int elementLevel = -1;
 
     ArrayList<Command> commandList = new ArrayList<Command>();
@@ -36,16 +37,23 @@ public class Top extends AutoBaseOpMode {
     private DistanceSensor lDistanceSensor;
     private DistanceSensor rDistanceSensor;
 
-    AutoDrive forward = new AutoDrive(1, 2);
-    AutoDrive farForward = new AutoDrive(1, 4);
-    AutoDrive back = new AutoDrive(-1, 2);
-    AutoDrive farBack = new AutoDrive(-1, 4);
+    AutoDrive forward = new AutoDrive(1, 1.3);
+    AutoDrive farForward = new AutoDrive(1, 2.7);
+    AutoDrive back = new AutoDrive(-1, 1.3);
+    AutoDrive farBack = new AutoDrive(-1, 2.7);
     AutoSlide slideLeft = new AutoSlide(-1, 1.1);
     AutoSlide slideRight = new AutoSlide(1, 1.1);
+    AutoElevator elevate = new AutoElevator(elementLevel);
+    AutoElevatorRecover elevateRecover = new AutoElevatorRecover();
+    AutoDunk dunk = new AutoDunk();
 
 
     @Override
     public void onInit() {
+        // Clear Auto before every Auto
+        Scheduler.instance.clear();
+
+        // Gets teh time when the Auto is run!
         startTime = t.seconds();
 
         lDistanceSensor = hardwareMap.get(DistanceSensor.class, lDistanceSensorName);
@@ -53,31 +61,37 @@ public class Top extends AutoBaseOpMode {
 
         // TOP SETUP
         // Slide left near the element for detection!~
-        commandList.add(new AutoSlide(-1, 0.55));
+        commandList.add(new AutoSlide(-1, 0.6));
         timeList.add(0.0);
 
         // Go to the dropping line~ (Logically, the sensor should still detect the game
         // element if it's at 1, even though it was from the dropping line)~
-        commandList.add(new AutoDrive(-1, 0.3));
+        commandList.add(new AutoDrive(-1, 0.4));
         timeList.add(timeList.get(timeList.size()-1)+1);
 
-
         // Slide to the ShippingHub
-        commandList.add(new AutoSlide(-1, 0.45));
+        commandList.add(new AutoSlide(-1, 0.4));
         timeList.add(timeList.get(timeList.size()-1)+1);
 
         // Elevate to dunk~
-        commandList.add(new AutoElevator(elementLevel));
+        commandList.add(elevate);
         timeList.add(timeList.get(timeList.size()-1)+1);
 
         // Dunk!!!!! #_#
-        commandList.add(new AutoDunk());
+        commandList.add(dunk);
         timeList.add(timeList.get(timeList.size()-1)+1.7);
 
+        // Elevator down!
+        commandList.add(elevateRecover);
+        timeList.add(timeList.get(timeList.size()-1)+1.7);
+
+        // Cycle
         for (int i = 0; i < 7; ++i) {
+            // Right crash into the wall!!!
             commandList.add(slideRight);
             timeList.add(timeList.get(timeList.size()-1)+2);
 
+            // Going backward to the Warehouse
             commandList.add(forward);
             timeList.add(timeList.get(timeList.size()-1)+2);
 
@@ -86,6 +100,15 @@ public class Top extends AutoBaseOpMode {
 
             commandList.add(slideLeft);
             timeList.add(timeList.get(timeList.size()-1)+2);
+
+            commandList.add(elevate);
+            timeList.add(timeList.get(timeList.size()-1)+2);
+
+            commandList.add(dunk);
+            timeList.add(timeList.get(timeList.size()-1)+1.7);
+
+            commandList.add(elevateRecover);
+            timeList.add(timeList.get(timeList.size()-1)+1.7);
 
 //            if (cycleIndex == 0)    Scheduler.instance.add(isTop? slideRight : slideLeft);
 //            else if (cycleIndex == 1)   Scheduler.instance.add(isTop? forward : farBack);
@@ -101,6 +124,8 @@ public class Top extends AutoBaseOpMode {
 
     @Override
     public void onLoop() {
+        Subsystems.instance.intake.intake();
+
         double lDistance = lDistanceSensor.getDistance(DistanceUnit.CM);
         Hardware.log("Distance", lDistance);
 
@@ -120,6 +145,8 @@ public class Top extends AutoBaseOpMode {
             }
             else if (stepIndex == 3) {
                 Scheduler.instance.add(new AutoElevator(elementLevel));
+                ++stepIndex;
+
                 return;
             }
 
