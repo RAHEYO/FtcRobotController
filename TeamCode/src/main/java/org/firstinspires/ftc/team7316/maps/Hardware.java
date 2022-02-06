@@ -33,6 +33,7 @@ public class Hardware {
     public DcMotorSimple intakeMotor;
     public DcMotor armMotor;
     public Servo armServo;
+    public Servo cappingServo;
     public DcMotorSimple spinnerMotor;
     public GyroWrapper gyroWrapper;
 
@@ -52,6 +53,7 @@ public class Hardware {
     public final String imuname = "gyro";
     public final String armMotorName = "armmotor";
     public final String armServoName = "armservo";
+    public final String cappingServoName = "cappingservo";
     public final String spinnerName = "spinnermotor";
 
 
@@ -66,6 +68,7 @@ public class Hardware {
         intakeMotor = map.get(DcMotorSimple.class, intakeMotorName);
         armMotor = map.dcMotor.get(armMotorName);
         armServo = map.servo.get(armServoName);
+        cappingServo = map.servo.get(cappingServoName);
         spinnerMotor = map.get(DcMotorSimple.class, spinnerName);
 
 

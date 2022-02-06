@@ -21,6 +21,16 @@ public class ArmSubsystem extends Subsystem {
 
     public void turnServo(double position) { Hardware.instance.armServo.setPosition(position); }
 
+    public void cap(boolean isLift) {
+        double currentPosition = Hardware.instance.armServo.getPosition();
+        double nextPosition;
+
+        if (isLift) nextPosition = currentPosition + 0.1;
+        else    nextPosition = currentPosition - 0.1;
+
+        Hardware.instance.armServo.setPosition(nextPosition);
+    }
+
     @Override
     public Command defaultAutoCommand() {
         return null;
