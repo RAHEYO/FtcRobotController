@@ -6,8 +6,9 @@ import org.firstinspires.ftc.team7316.util.commands.Command;
 import org.firstinspires.ftc.team7316.util.subsystems.Subsystem;
 
 public class SpinnerSubsystem extends Subsystem {
-    private final double spinSpeed = 0.6;
-    private final double backSpinSpeed = -0.6;
+    // TRUST ME! The values are right!~ $_$
+    private final double spinSpeed = -0.6;
+    private final double backSpinSpeed = 0.6;
 
     @Override
     public void reset() { this.setPower(0); }
@@ -30,7 +31,7 @@ public class SpinnerSubsystem extends Subsystem {
         this.setPower(backSpinSpeed);
     }
 
-    public void autoSpin() {
+    public void autoSpin(boolean isIn) {
 //        Hardware.instance.frontLeftMotorWrapper.setPowerPID(dTime);
 //        Hardware.instance.frontRightMotorWrapper.setPowerPID(dTime);
 //        Hardware.instance.backLeftMotorWrapper.setPowerPID(dTime);
@@ -39,6 +40,6 @@ public class SpinnerSubsystem extends Subsystem {
 //        double power = Hardware.instance.spinnerMotorWrapper.getPowerFromPID(dTime);
 
 //        setMotors(power*lf, power*-rf, power*-lb, power*rb);
-        Hardware.instance.spinnerMotor.setPower(backSpinSpeed);
+        Hardware.instance.spinnerMotor.setPower(isIn? spinSpeed : backSpinSpeed);
     }
 }

@@ -64,7 +64,7 @@ public class Top extends AutoBaseOpMode {
         if (isTop) {
             // TOP SETUP
             // Slide left near the element for detection!~
-            commandList.add(new AutoSlide(-1, 1));
+            commandList.add(new AutoSlide(isRed? -1 : 1, 1));
             timeList.add(0.0);
 
             // Go to the dropping line~ (Logically, the sensor should still detect the game
@@ -109,7 +109,7 @@ public class Top extends AutoBaseOpMode {
 //                commandList.add(elevateRecover);
 //                timeList.add(timeList.get(timeList.size()-1)+1.7);
 //            }
-            commandList.add(slideRight);
+            commandList.add(isRed? slideRight : slideLeft);
             timeList.add(timeList.get(timeList.size()-1)+1.1);
 
             commandList.add(forward);
@@ -121,41 +121,72 @@ public class Top extends AutoBaseOpMode {
 
         } else {
             // BOTTOM SETUP~ #_#
-            // Slide left to line up with the Shipping Hub
-            commandList.add(new AutoSlide(-1, 0.9));
-            timeList.add(0.0);
 
-            // Drive back towards the dunking position
-            commandList.add(new AutoDrive(-1, 1));
-            timeList.add(timeList.get(timeList.size()-1)+1);
+            if (isRed) {
+                // Slide left to line up with the Shipping Hub
+                commandList.add(new AutoSlide(-1, 0.9));
+                timeList.add(0.0);
 
-            // Elevate to dunk
-            commandList.add(new AutoElevator(elementLevel));
-            timeList.add(timeList.get(timeList.size()-1)+1);
+                // Drive back towards the dunking position
+                commandList.add(new AutoDrive(-1, 1));
+                timeList.add(timeList.get(timeList.size()-1)+1);
 
-            // Dunk that SHIT!!!!!
-            commandList.add(new AutoDunk());
-            timeList.add(timeList.get(timeList.size()-1)+1.7);
+                // Elevate to dunk
+                commandList.add(elevate);
+                timeList.add(timeList.get(timeList.size()-1)+1);
 
-            // Everyone needs to recover from dunking, right?
-            commandList.add(new AutoElevatorRecover());
-            timeList.add(timeList.get(timeList.size()-1)+1.7);
+                // Dunk that SHIT!!!!!
+                commandList.add(dunk);
+                timeList.add(timeList.get(timeList.size()-1)+1.7);
 
-            // Slide to line up with the Carousel
-            commandList.add(new AutoSlide(1, 1.5));
-            timeList.add(timeList.get(timeList.size()-1)+1.7);
+                // Everyone needs to recover from dunking, right?
+                commandList.add(elevateRecover);
+                timeList.add(timeList.get(timeList.size()-1)+1.7);
 
-            // Drive forward to place the spinner onto the carousel!~
-            commandList.add(new AutoDrive(1, 0.6));
-            timeList.add(timeList.get(timeList.size()-1)+2);
+                // Slide to line up with the Carousel
+                commandList.add(new AutoSlide(1, 1.5));
+                timeList.add(timeList.get(timeList.size()-1)+1.7);
 
-            // Spin!!! #_#
-            commandList.add(new AutoSpinner());
-            timeList.add(timeList.get(timeList.size()-1)+1);
+                // Drive forward to place the spinner onto the carousel!~
+                commandList.add(new AutoDrive(1, 0.6));
+                timeList.add(timeList.get(timeList.size()-1)+2);
 
-            // Drive back to park!~ $_$
-            commandList.add(new AutoDrive(-1, 0.6));
-            timeList.add(timeList.get(timeList.size()-1)+5);
+                // Spin!!! #_#
+                commandList.add(new AutoSpinner(isRed));
+                timeList.add(timeList.get(timeList.size()-1)+1);
+
+                // Drive back to park!~ $_$
+                commandList.add(new AutoDrive(-1, 0.6));
+                timeList.add(timeList.get(timeList.size()-1)+5);
+            } else {
+                commandList.add(new AutoDrive(1, 0.6));
+                timeList.add(0.0);
+
+                commandList.add(new AutoSpinner(isRed));
+                timeList.add(timeList.get(timeList.size()-1)+1);
+
+                commandList.add(new AutoSlide(-1, 1.3));
+                timeList.add(timeList.get(timeList.size()-1)+5);
+
+                commandList.add(new AutoDrive(-1, 1));
+                timeList.add(timeList.get(timeList.size()-1)+2);
+
+                commandList.add(elevate);
+                timeList.add(timeList.get(timeList.size()-1)+1);
+
+                commandList.add(dunk);
+                timeList.add(timeList.get(timeList.size()-1)+1.7);
+
+                commandList.add(elevateRecover);
+                timeList.add(timeList.get(timeList.size()-1)+1.7);
+
+                commandList.add(new AutoDrive(1, 1.1));
+                timeList.add(timeList.get(timeList.size()-1)+1.7);
+
+                commandList.add(new AutoSlide(1, 0.6));
+                timeList.add(timeList.get(timeList.size()-1)+2);
+            }
+
         }
 
     }
@@ -176,13 +207,6 @@ public class Top extends AutoBaseOpMode {
         }
         if (t.seconds() - startTime > timeList.get(stepIndex))
         {
-             if (isTop && stepIndex == 2) {
-                 Scheduler.instance.add(new AutoElevator(elementLevel));
-                 ++stepIndex;
-
-                 return;
-             }
-
             Scheduler.instance.add(commandList.get(stepIndex));
 
             ++stepIndex;

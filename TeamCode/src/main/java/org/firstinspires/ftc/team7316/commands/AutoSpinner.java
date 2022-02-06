@@ -13,6 +13,10 @@ public class AutoSpinner extends Command {
     ElapsedTime t = new ElapsedTime();
     double startTime;
 
+    boolean isRed;
+
+    public AutoSpinner(boolean isRed) { this.isRed = isRed; }
+
     @Override
     public void init() {
         startTime = t.seconds();
@@ -20,7 +24,7 @@ public class AutoSpinner extends Command {
 
     @Override
     public void loop() {
-        Subsystems.instance.spinnerSub.autoSpin();
+        Subsystems.instance.spinnerSub.autoSpin(isRed);
 
         Hardware.log("Spinner DTime: ", t.seconds()-startTime);
     }
